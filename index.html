@@ -149,7 +149,7 @@ th{color:#0f766e;background:#f0fdfa}
 
     <section class="flow">
       <div class="step"><span class="n">1</span><b>Elegir o describir</b><div class="sub">Producto o solicitud libre</div></div>
-      <div class="step"><span class="n">2</span><b>Interpretar con IA</b><div class="sub">Extraer datos automáticamente</div></div>
+      <div class="step"><span class="n">2</span><b>Interpretación automática</b><div class="sub">Extrae los datos mientras escribes o dictas</div></div>
       <div class="step"><span class="n">3</span><b>Revisar datos</b><div class="sub">Corregir antes de calcular</div></div>
       <div class="step"><span class="n">4</span><b>Generar cotización</b><div class="sub">Con motor real del producto</div></div>
     </section>
@@ -189,7 +189,8 @@ function fill(d){
   $('msg').textContent='Interpretación lista ('+(d.fuente||'IA')+'). Revisa los datos antes de cotizar.';
 }
 function interpretLocalBrowser(text){
-  const t=String(text||'').toLowerCase();
+  const raw=String(text||'').trim();
+  const t=raw.toLowerCase().replace(/\s+/g,' ');
   let producto='', familia='';
   if(/\bpelota(s)?\b/.test(t)){producto='Pelota';familia='Pelotas / Esferas';}
   else if(/\besfera(s)?\b/.test(t)){producto='Esfera';familia='Pelotas / Esferas';}
@@ -202,9 +203,14 @@ function interpretLocalBrowser(text){
   else if(/\bbotella(s)?\b/.test(t)){producto='Botella';familia='Botellas';}
   else {producto='Otro';familia='Otros productos';}
 
+  // Medida: acepta mm, cm y m; siempre la normaliza a centímetros.
   let medida=null;
-  const m=t.match(/(\d+(?:[.,]\d+)?)\s*(?:cm|cms|cent[ií]metros?)/i);
-  if(m) medida=Number(m[1].replace(',','.'));
+  const mm=t.match(/(\d+(?:[.,]\d+)?)\s*(?:mm|mil[ií]metros?)/i);
+  const cm=t.match(/(\d+(?:[.,]\d+)?)\s*(?:cm|cms|cent[ií]metros?)/i);
+  const mt=t.match(/(\d+(?:[.,]\d+)?)\s*(?:m|mts|mt|metros?)(?![a-z])/i);
+  if(mm) medida=Number(mm[1].replace(',','.'))/10;
+  else if(cm) medida=Number(cm[1].replace(',','.'));
+  else if(mt) medida=Number(mt[1].replace(',','.'))*100;
 
   let tintas=null;
   const ti=t.match(/(\d+)\s*tintas?/i);
@@ -214,9 +220,11 @@ function interpretLocalBrowser(text){
   const ga=t.match(/(\d+)\s*gajos?/i);
   if(ga) gajos=parseInt(ga[1],10);
 
-  let impresion=tintas?'Serigrafía':'';
-  if(/\bdigital\b/.test(t)) impresion='Digital';
-  if(/\buv\b/.test(t)) impresion='Digital UV';
+  let impresion='';
+  if(/\bsin\s+impresi[oó]n\b|\bsin\s+imprimir\b/.test(t)) impresion='Sin impresión';
+  else if(/\buv\b/.test(t)) impresion='Digital UV';
+  else if(/\bdigital\b/.test(t)) impresion='Digital';
+  else if(tintas) impresion='Serigrafía';
 
   let arte='';
   if(/mismo\s+logo/.test(t)) arte='Mismo logo';
@@ -226,15 +234,49 @@ function interpretLocalBrowser(text){
   const pvc=t.match(/pvc(?:\s+cal(?:ibre)?\.?\s*)?(\d+(?:[.,]\d+)?)?/i);
   if(pvc) material=pvc[1]?'PVC calibre '+pvc[1].replace(',','.'):'PVC';
 
+  // Cantidades: prioridad a expresiones explícitas y a la cantidad que antecede al producto.
   let cantidades=[];
-  const afterCotizar=t.split(/cotizar|cantidades?|piezas?/).slice(1).join(' ');
-  const nums=(afterCotizar||t).match(/\b\d{1,6}\b/g)||[];
-  cantidades=nums.map(Number).filter(n=>n>0&&n!==medida&&n!==tintas&&n!==gajos);
-  cantidades=[...new Set(cantidades)].slice(0,12);
-  const enMatch=t.match(/(?:en|cantidades?\s*:?)\s*([\d,\sy]+)/i);
-  if(enMatch){const ns=enMatch[1].match(/\d+/g);if(ns&&ns.length)cantidades=[...new Set(ns.map(Number))].slice(0,12);}
+  const addNums = str => {
+    const ns=(str||'').match(/\d{1,6}/g)||[];
+    ns.map(Number).filter(n=>n>0).forEach(n=>{ if(!cantidades.includes(n)) cantidades.push(n); });
+  };
 
-  return {familia,producto,medida_cm:medida,material,impresion,tintas,gajos_impresos:gajos,arte,cantidades,observaciones:'',confianza:0.88,fuente:'Intérprete local'};
+  // Ej.: "cotizar 5, 10 y 20 piezas" o "cantidades 5 10 20".
+  const cot=t.match(/(?:cotizar|cantidades?\s*:?)\s+([^.;]+)/i);
+  if(cot) addNums(cot[1]);
+
+  // Ej.: "en 5, 10 y 20 piezas".
+  if(!cantidades.length){
+    const en=t.match(/\ben\s+([\d\s,;y]+)\s*(?:piezas?|unidades?)?/i);
+    if(en) addNums(en[1]);
+  }
+
+  // Ej.: "10 pelotas de 2 m" => 10 es cantidad, 2 m es medida.
+  if(!cantidades.length){
+    const prodWords='(?:pelotas?|esferas?|boyas?|arcos?|t[uú]neles?|salvavidas|donas?|portavasos?|botellas?)';
+    const q=t.match(new RegExp('(?:^|\\b)(\\d{1,6})\\s+'+prodWords+'\\b','i'));
+    if(q) cantidades=[Number(q[1])];
+  }
+
+  // Ej.: "20 piezas de pelota...".
+  if(!cantidades.length){
+    const q2=t.match(/(?:^|\b)(\d{1,6})\s*(?:piezas?|unidades?)\b/i);
+    if(q2) cantidades=[Number(q2[1])];
+  }
+
+  // Último recurso: números que no forman parte de una medida, tintas o gajos.
+  if(!cantidades.length){
+    let cleaned=t
+      .replace(/\d+(?:[.,]\d+)?\s*(?:mm|mil[ií]metros?|cm|cms|cent[ií]metros?|m|mts|mt|metros?)(?![a-z])/gi,' ')
+      .replace(/\d+\s*tintas?/gi,' ')
+      .replace(/\d+\s*gajos?/gi,' ')
+      .replace(/pvc\s+cal(?:ibre)?\.?\s*\d+(?:[.,]\d+)?/gi,' ');
+    addNums(cleaned);
+  }
+
+  cantidades=cantidades.filter(n=>Number.isFinite(n)&&n>0).slice(0,12);
+
+  return {familia,producto,medida_cm:medida,material,impresion,tintas,gajos_impresos:gajos,arte,cantidades,observaciones:'',confianza:0.93,fuente:'Intérprete local mejorado'};
 }
 
 function hasAppsScriptBridge(){
