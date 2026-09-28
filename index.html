@@ -87,7 +87,7 @@ th{color:#0f766e;background:#f0fdfa}
 
   <main>
     <div class="top">
-      <div><h1>Cotizador Principal con IA ✦</h1><div class="sub">Escribe o dicta tu solicitud. La IA la interpreta y prepara el cotizador correspondiente.</div></div>
+      <div><h1>Cotizador Principal con IA ✦</h1><div class="sub">Escribe o dicta tu solicitud. La IA la interpreta automáticamente para que solo revises los datos antes de cotizar.</div></div>
       <div class="status"><div class="pill" id="datePill">📅</div><div class="pill" id="timePill">🕒</div><div class="pill">🟢 Conectado</div></div>
     </div>
 
@@ -104,7 +104,6 @@ th{color:#0f766e;background:#f0fdfa}
           <input class="fileInput" type="file" id="fileInput" accept="image/*,.pdf">
         </div>
         <div class="actionRow">
-          <button class="btn interpret" type="button" id="interpretBtn">✦ Interpretar</button>
           <button class="btn quote" type="button" id="quoteBtn">▣ Cotizar</button>
           <button class="btn clear" type="button" id="clearBtn">🗑 Limpiar</button>
         </div>
@@ -242,22 +241,43 @@ function hasAppsScriptBridge(){
   return !!(window.google && google.script && google.script.run);
 }
 
+let interpretTimer=null;
+let interpretSeq=0;
+
 function interpret(){
   const text=$('request').value.trim();
-  if(!text){$('msg').textContent='Escribe o dicta una solicitud.';return;}
-  $('msg').textContent='Interpretando…'; $('interpretBtn').disabled=true;
+  if(!text){return;}
+  const seq=++interpretSeq;
+  $('msg').textContent='Interpretando automáticamente…';
   if(hasAppsScriptBridge()){
-    google.script.run.withSuccessHandler(d=>{ $('interpretBtn').disabled=false; fill(d); })
-      .withFailureHandler(e=>{ $('interpretBtn').disabled=false; $('msg').textContent='Error: '+e.message; })
-      .interpretRequest(text);
+    google.script.run.withSuccessHandler(d=>{
+      if(seq!==interpretSeq) return;
+      fill(d);
+      $('msg').textContent='Interpretación actualizada automáticamente. Revisa los datos antes de cotizar.';
+    }).withFailureHandler(e=>{
+      if(seq!==interpretSeq) return;
+      $('msg').textContent='Error al interpretar: '+e.message;
+    }).interpretRequest(text);
   }else{
-    try{fill(interpretLocalBrowser(text));}
-    catch(e){$('msg').textContent='Error: '+e.message;}
-    finally{$('interpretBtn').disabled=false;}
+    try{
+      const d=interpretLocalBrowser(text);
+      if(seq!==interpretSeq) return;
+      fill(d);
+      $('msg').textContent='Interpretación actualizada automáticamente. Revisa los datos antes de cotizar.';
+    }catch(e){
+      if(seq===interpretSeq) $('msg').textContent='Error al interpretar: '+e.message;
+    }
   }
 }
 
-$('interpretBtn').addEventListener('click',interpret);
+function scheduleInterpret(delay=700){
+  clearTimeout(interpretTimer);
+  const text=$('request').value.trim();
+  if(!text) return;
+  interpretTimer=setTimeout(interpret,delay);
+}
+
+$('request').addEventListener('input',()=>scheduleInterpret(700));
 
 $('quoteBtn').addEventListener('click',()=>{
   const d=formData();
@@ -439,8 +459,9 @@ async function startVoice(){
     if(hadError){
       setVoiceUi(false,$('voiceStatus').textContent||'Toca el micrófono para dictar');
     }else{
-      setVoiceUi(false,'Dictado listo. Revisa el texto y pulsa Interpretar.');
-      $('msg').textContent='Dictado listo. Revisa el texto y pulsa Interpretar.';
+      setVoiceUi(false,'Dictado listo. Interpretando automáticamente…');
+      $('msg').textContent='Dictado listo. Interpretando automáticamente…';
+      scheduleInterpret(150);
     }
     $('request').focus();
   };
@@ -469,6 +490,7 @@ document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>
   $('producto').value=btn.dataset.name;
   if(!$('request').value.trim())$('request').value=btn.dataset.name+' ';
   $('request').focus();
+  scheduleInterpret(400);
 }));
 </script>
 </body>
