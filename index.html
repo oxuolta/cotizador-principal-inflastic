@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="INFLASTIC Cotizador">
+<meta name="mobile-web-app-capable" content="yes">
+<title>INFLASTIC · Cotizador Principal con IA</title>
+<style>
+:root{
+  --nav:#0b2f6f;--nav2:#08265a;--ink:#14213d;--muted:#667085;--bg:#f6f8fc;
+  --card:#fff;--line:#e3e8f0;--teal:#14b8a6;--blue:#2563eb;--orange:#f97316;
+  --pink:#ec4899;--purple:#7c3aed;--green:#16a34a;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,textarea,select{font:inherit}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:linear-gradient(180deg,var(--nav),var(--nav2));color:#fff;padding:20px 14px;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 8px 14px}
+.logo{width:58px;height:58px;border-radius:50%;background:conic-gradient(#22c55e,#38bdf8,#7c3aed,#ec4899,#f97316,#facc15,#22c55e);border:4px solid #fff3}
+.brand b{font-size:22px;letter-spacing:.5px}
+.brand small{display:block;color:#cde7ff;margin-top:2px}
+nav{display:grid;gap:6px}
+nav button{border:0;background:transparent;color:#e9f2ff;text-align:left;padding:13px 14px;border-radius:12px;min-height:48px}
+nav button.active{background:linear-gradient(90deg,#0ea5e9,#14b8a6);color:white;font-weight:800}
+aside .foot{margin-top:auto;border-top:1px solid #ffffff22;padding-top:14px;color:#d8e6ff;font-size:13px}
+main{padding:22px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+h1{font-size:clamp(28px,4vw,44px);margin:0} .sub{color:var(--muted);margin-top:6px}
+.status{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.pill{background:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:12px;box-shadow:0 4px 16px #102a4310;font-weight:700}
+.gridTop{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 6px 24px #102a4310}
+.aiCard{border:2px solid transparent;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(100deg,#7c3aed,#ec4899,#f59e0b) border-box}
+.card h2{margin:0 0 12px;font-size:20px}
+textarea{width:100%;min-height:150px;resize:vertical;border:1px solid #d6dce8;border-radius:14px;padding:14px;font-size:17px}
+.modeRow,.actionRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{border:0;border-radius:12px;padding:12px 16px;min-height:48px;font-weight:800;cursor:pointer}
+.btn.write{background:#ede9fe;color:#6d28d9}.btn.voice{background:#d1fae5;color:#047857}.btn.attach{background:#ffedd5;color:#c2410c}
+.btn.interpret{background:linear-gradient(90deg,#7c3aed,#6366f1);color:white}.btn.quote{background:linear-gradient(90deg,#16a34a,#059669);color:white}
+.btn.clear{background:#eef2f7;color:#475467}.mic{width:82px;height:82px;border-radius:50%;border:0;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:34px;margin:8px auto;display:block;box-shadow:0 0 0 12px #7c3aed12}
+.mic.recording{animation:pulse 1s infinite;background:linear-gradient(135deg,#ef4444,#ec4899)}
+.mic[aria-pressed="true"]{transform:scale(.98)}
+.voiceStatus{text-align:center;color:#667085;font-weight:700;min-height:22px;margin-top:2px}
+textarea[readonly]{background:#f8fafc;color:#334155}
+@keyframes pulse{50%{box-shadow:0 0 0 20px #ec489922}}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{border:1px solid #d9ebe8;background:#f8fffd;border-radius:12px;padding:10px}
+.field label{display:block;font-size:12px;color:#0f766e;font-weight:800}
+.field input{border:0;background:transparent;width:100%;font-weight:750;color:var(--ink);padding:4px 0 0;outline:none}
+.full{grid-column:1/-1}
+.summary{margin-top:16px}
+.tableWrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{padding:11px;border-bottom:1px solid #edf0f5;text-align:left}
+th{color:#0f766e;background:#f0fdfa}
+.notice{margin-top:12px;border-radius:12px;padding:12px;background:#fff7ed;color:#9a3412;font-weight:700}
+.categories{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:16px}
+.cat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center;min-height:116px;cursor:pointer}
+.cat .ico{font-size:38px;display:block;margin-bottom:6px}.cat b{font-size:14px}
+.cat.selected{outline:3px solid #14b8a644;background:#f0fdfa}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
+.step .n{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;color:#fff;font-weight:900;margin-right:8px}
+.step:nth-child(1) .n{background:#7c3aed}.step:nth-child(2) .n{background:#2563eb}.step:nth-child(3) .n{background:#f97316}.step:nth-child(4) .n{background:#16a34a}
+#msg{min-height:24px;margin:10px 0 0;font-weight:700;color:#0f766e}
+.fileInput{display:none}
+@media(max-width:980px){.app{grid-template-columns:1fr}aside{display:none}.gridTop{grid-template-columns:1fr}.categories{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){main{padding:14px}.top{flex-direction:column}.status{justify-content:flex-start}.fields{grid-template-columns:1fr}.full{grid-column:auto}.categories{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:1fr 1fr}.btn{flex:1}.mic{width:96px;height:96px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="logo"></div><div><b>INFLASTIC</b><small>Creamos experiencias inflables</small></div></div>
+    <nav>
+      <button>⌂ Inicio</button><button>▦ Tablero Principal</button><button class="active">✦ Cotizador Principal</button>
+      <button>▣ Órdenes de Producción</button><button>◇ Inventario</button><button>🛒 Compras y Proveedores</button>
+      <button>♙ Clientes</button><button>🚚 Entregas / Logística</button><button>◎ Calidad</button>
+      <button>▥ Reportes</button><button>🛠 Mantenimiento</button><button>⚙ Catálogos / Configuración</button>
+    </nav>
+    <div class="foot">Administrador<br><b>INFLASTIC 360</b><br><span style="color:#6ee7b7">● Conectado</span></div>
+  </aside>
+
+  <main>
+    <div class="top">
+      <div><h1>Cotizador Principal con IA ✦</h1><div class="sub">Escribe o dicta tu solicitud. La IA la interpreta y prepara el cotizador correspondiente.</div></div>
+      <div class="status"><div class="pill" id="datePill">📅</div><div class="pill" id="timePill">🕒</div><div class="pill">🟢 Conectado</div></div>
+    </div>
+
+    <div class="gridTop">
+      <section class="card aiCard">
+        <h2>✦ Cotizar con IA</h2>
+        <textarea id="request" maxlength="600" placeholder="Ej.: Pelota 50 cm, 2 tintas, 2 gajos mismo logo, cotizar 5, 10, 15, 50 y 200 piezas"></textarea>
+        <button id="micBtn" class="mic" type="button" aria-label="Dictar solicitud">🎙</button>
+        <div id="voiceStatus" class="voiceStatus">Toca el micrófono para dictar</div>
+        <div class="modeRow">
+          <button class="btn write" type="button" id="writeBtn">✎ Escribir</button>
+          <button class="btn voice" type="button" id="voiceBtn">🎙 Hablar</button>
+          <button class="btn attach" type="button" id="attachBtn">📎 Adjuntar referencia</button>
+          <input class="fileInput" type="file" id="fileInput" accept="image/*,.pdf">
+        </div>
+        <div class="actionRow">
+          <button class="btn interpret" type="button" id="interpretBtn">✦ Interpretar</button>
+          <button class="btn quote" type="button" id="quoteBtn">▣ Cotizar</button>
+          <button class="btn clear" type="button" id="clearBtn">🗑 Limpiar</button>
+        </div>
+        <div id="msg" aria-live="polite"></div>
+      </section>
+
+      <section class="card">
+        <h2>🤖 La IA interpretó</h2>
+        <div class="fields">
+          <div class="field"><label>Producto</label><input id="producto"></div>
+          <div class="field"><label>Familia</label><input id="familia"></div>
+          <div class="field"><label>Medida (cm)</label><input id="medida" inputmode="decimal"></div>
+          <div class="field"><label>Material</label><input id="material"></div>
+          <div class="field"><label>Impresión</label><input id="impresion"></div>
+          <div class="field"><label>No. de tintas</label><input id="tintas" inputmode="numeric"></div>
+          <div class="field"><label>Gajos impresos</label><input id="gajos" inputmode="numeric"></div>
+          <div class="field"><label>Arte</label><input id="arte"></div>
+          <div class="field full"><label>Cantidades</label><input id="cantidades" placeholder="Ej. 5, 10, 15, 50, 200"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card summary">
+      <h2>💲 Resumen de cotización</h2>
+      <div class="tableWrap">
+        <table><thead><tr><th>Cantidad</th><th>Precio unitario</th><th>Importe</th><th>Estado</th></tr></thead><tbody id="quoteBody"><tr><td colspan="4">Interpreta una solicitud para comenzar.</td></tr></tbody></table>
+      </div>
+      <div class="notice" id="engineNotice">El motor de precios reales todavía no está conectado. Esta pantalla no inventará precios.</div>
+    </section>
+
+    <section class="categories" id="categories">
+      <button class="cat" data-name="Pelota"><span class="ico">🏐</span><b>Pelotas</b></button>
+      <button class="cat" data-name="Boya"><span class="ico">🛟</span><b>Boyas</b></button>
+      <button class="cat" data-name="Arco"><span class="ico">⛩</span><b>Arcos</b></button>
+      <button class="cat" data-name="Túnel"><span class="ico">🌈</span><b>Túneles</b></button>
+      <button class="cat" data-name="Salvavidas"><span class="ico">⭕</span><b>Salvavidas</b></button>
+      <button class="cat" data-name="Dona"><span class="ico">🍩</span><b>Donas / Portavasos</b></button>
+      <button class="cat" data-name="Cartelera"><span class="ico">🪧</span><b>Carteleras / Tótems</b></button>
+      <button class="cat" data-name="Esfera"><span class="ico">🔵</span><b>Esferas</b></button>
+      <button class="cat" data-name="Botella"><span class="ico">🧴</span><b>Botellas</b></button>
+      <button class="cat" data-name="Otro"><span class="ico">❓</span><b>Otros productos</b></button>
+    </section>
+
+    <section class="flow">
+      <div class="step"><span class="n">1</span><b>Elegir o describir</b><div class="sub">Producto o solicitud libre</div></div>
+      <div class="step"><span class="n">2</span><b>Interpretar con IA</b><div class="sub">Extraer datos automáticamente</div></div>
+      <div class="step"><span class="n">3</span><b>Revisar datos</b><div class="sub">Corregir antes de calcular</div></div>
+      <div class="step"><span class="n">4</span><b>Generar cotización</b><div class="sub">Con motor real del producto</div></div>
+    </section>
+  </main>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let lastData=null;
+let recognition=null;
+
+function setNow(){
+  const d=new Date();
+  $('datePill').textContent='📅 '+d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+  $('timePill').textContent='🕒 '+d.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+}
+setNow(); setInterval(setNow,30000);
+
+function formData(){
+  return {
+    producto:$('producto').value.trim(),
+    familia:$('familia').value.trim(),
+    medida_cm:$('medida').value?Number($('medida').value):null,
+    material:$('material').value.trim(),
+    impresion:$('impresion').value.trim(),
+    tintas:$('tintas').value?Number($('tintas').value):null,
+    gajos_impresos:$('gajos').value?Number($('gajos').value):null,
+    arte:$('arte').value.trim(),
+    cantidades:$('cantidades').value.split(/[,;\s]+/).map(Number).filter(n=>Number.isFinite(n)&&n>0)
+  };
+}
+function fill(d){
+  lastData=d;
+  $('producto').value=d.producto||'';$('familia').value=d.familia||'';$('medida').value=d.medida_cm??'';
+  $('material').value=d.material||'';$('impresion').value=d.impresion||'';$('tintas').value=d.tintas??'';
+  $('gajos').value=d.gajos_impresos??'';$('arte').value=d.arte||'';$('cantidades').value=(d.cantidades||[]).join(', ');
+  $('msg').textContent='Interpretación lista ('+(d.fuente||'IA')+'). Revisa los datos antes de cotizar.';
+}
+function interpretLocalBrowser(text){
+  const t=String(text||'').toLowerCase();
+  let producto='', familia='';
+  if(/\bpelota(s)?\b/.test(t)){producto='Pelota';familia='Pelotas / Esferas';}
+  else if(/\besfera(s)?\b/.test(t)){producto='Esfera';familia='Pelotas / Esferas';}
+  else if(/\bboya(s)?\b/.test(t)){producto='Boya';familia='Boyas';}
+  else if(/\barco(s)?\b/.test(t)){producto='Arco';familia='Arcos';}
+  else if(/\bt[uú]nel(es)?\b/.test(t)){producto='Túnel';familia='Túneles';}
+  else if(/\bsalvavidas\b/.test(t)){producto='Salvavidas';familia='Salvavidas';}
+  else if(/\bdona(s)?\b/.test(t)){producto='Dona';familia='Donas / Portavasos';}
+  else if(/\bportavasos?\b/.test(t)){producto='Portavasos';familia='Donas / Portavasos';}
+  else if(/\bbotella(s)?\b/.test(t)){producto='Botella';familia='Botellas';}
+  else {producto='Otro';familia='Otros productos';}
+
+  let medida=null;
+  const m=t.match(/(\d+(?:[.,]\d+)?)\s*(?:cm|cms|cent[ií]metros?)/i);
+  if(m) medida=Number(m[1].replace(',','.'));
+
+  let tintas=null;
+  const ti=t.match(/(\d+)\s*tintas?/i);
+  if(ti) tintas=parseInt(ti[1],10);
+
+  let gajos=null;
+  const ga=t.match(/(\d+)\s*gajos?/i);
+  if(ga) gajos=parseInt(ga[1],10);
+
+  let impresion=tintas?'Serigrafía':'';
+  if(/\bdigital\b/.test(t)) impresion='Digital';
+  if(/\buv\b/.test(t)) impresion='Digital UV';
+
+  let arte='';
+  if(/mismo\s+logo/.test(t)) arte='Mismo logo';
+  else if(/logo\s+diferente|logos\s+diferentes/.test(t)) arte='Logos diferentes';
+
+  let material='';
+  const pvc=t.match(/pvc(?:\s+cal(?:ibre)?\.?\s*)?(\d+(?:[.,]\d+)?)?/i);
+  if(pvc) material=pvc[1]?'PVC calibre '+pvc[1].replace(',','.'):'PVC';
+
+  let cantidades=[];
+  const afterCotizar=t.split(/cotizar|cantidades?|piezas?/).slice(1).join(' ');
+  const nums=(afterCotizar||t).match(/\b\d{1,6}\b/g)||[];
+  cantidades=nums.map(Number).filter(n=>n>0&&n!==medida&&n!==tintas&&n!==gajos);
+  cantidades=[...new Set(cantidades)].slice(0,12);
+  const enMatch=t.match(/(?:en|cantidades?\s*:?)\s*([\d,\sy]+)/i);
+  if(enMatch){const ns=enMatch[1].match(/\d+/g);if(ns&&ns.length)cantidades=[...new Set(ns.map(Number))].slice(0,12);}
+
+  return {familia,producto,medida_cm:medida,material,impresion,tintas,gajos_impresos:gajos,arte,cantidades,observaciones:'',confianza:0.88,fuente:'Intérprete local'};
+}
+
+function hasAppsScriptBridge(){
+  return !!(window.google && google.script && google.script.run);
+}
+
+function interpret(){
+  const text=$('request').value.trim();
+  if(!text){$('msg').textContent='Escribe o dicta una solicitud.';return;}
+  $('msg').textContent='Interpretando…'; $('interpretBtn').disabled=true;
+  if(hasAppsScriptBridge()){
+    google.script.run.withSuccessHandler(d=>{ $('interpretBtn').disabled=false; fill(d); })
+      .withFailureHandler(e=>{ $('interpretBtn').disabled=false; $('msg').textContent='Error: '+e.message; })
+      .interpretRequest(text);
+  }else{
+    try{fill(interpretLocalBrowser(text));}
+    catch(e){$('msg').textContent='Error: '+e.message;}
+    finally{$('interpretBtn').disabled=false;}
+  }
+}
+
+$('interpretBtn').addEventListener('click',interpret);
+
+$('quoteBtn').addEventListener('click',()=>{
+  const d=formData();
+  $('msg').textContent='Preparando cotización…';
+  const renderResult=r=>{
+    const body=$('quoteBody'); body.innerHTML='';
+    (r.rows||[]).forEach(x=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td>'+x.cantidad+' piezas</td><td>—</td><td>—</td><td>'+x.estado+'</td>';
+      body.appendChild(tr);
+    });
+    if(!(r.rows||[]).length) body.innerHTML='<tr><td colspan="4">'+r.message+'</td></tr>';
+    $('engineNotice').textContent=r.message;
+    $('msg').textContent=r.ok?'Solicitud preparada correctamente.':'Revisa los datos.';
+  };
+  if(hasAppsScriptBridge()){
+    google.script.run.withSuccessHandler(renderResult)
+      .withFailureHandler(e=>$('msg').textContent='Error: '+e.message).calculateQuote(d);
+  }else{
+    const missing=[];
+    if(!d.producto) missing.push('producto');
+    if(!d.cantidades.length) missing.push('cantidades');
+    renderResult(missing.length?{ok:false,message:'Faltan datos: '+missing.join(', '),rows:[]}:{
+      ok:true,
+      message:'Solicitud lista. Falta conectar el motor de cálculo real de '+(d.familia||d.producto)+'.',
+      rows:d.cantidades.map(q=>({cantidad:q,estado:'Pendiente motor de cálculo'}))
+    });
+  }
+});
+
+$('clearBtn').addEventListener('click',()=>{
+  $('request').value=''; ['producto','familia','medida','material','impresion','tintas','gajos','arte','cantidades'].forEach(id=>$(id).value='');
+  $('quoteBody').innerHTML='<tr><td colspan="4">Interpreta una solicitud para comenzar.</td></tr>';
+  $('msg').textContent='';
+});
+
+$('writeBtn').addEventListener('click',()=>$('request').focus());
+$('attachBtn').addEventListener('click',()=>$('fileInput').click());
+$('fileInput').addEventListener('change',()=>{
+  const f=$('fileInput').files[0];
+  $('msg').textContent=f?'Referencia seleccionada: '+f.name+'. La lectura automática del archivo se conectará en la siguiente etapa.':'';
+});
+
+function setVoiceUi(listening, statusText){
+  const mic=$('micBtn');
+  mic.classList.toggle('recording', listening);
+  mic.setAttribute('aria-pressed', listening ? 'true' : 'false');
+  mic.setAttribute('aria-label', listening ? 'Detener dictado' : 'Dictar solicitud');
+  $('voiceBtn').textContent=listening ? '■ Detener' : '🎙 Hablar';
+  $('voiceStatus').textContent=statusText || (listening ? 'Escuchando… toca otra vez para detener' : 'Toca el micrófono para dictar');
+}
+
+function inIframe(){
+  try{return window.self!==window.top;}catch(e){return true;}
+}
+
+function microphonePolicyBlocked(){
+  try{
+    const pp=document.permissionsPolicy||document.featurePolicy;
+    if(!pp) return false;
+    if(typeof pp.allowsFeature==='function') return !pp.allowsFeature('microphone');
+  }catch(e){}
+  return false;
+}
+
+function voiceErrorMessage(code){
+  const map={
+    'not-allowed':'El navegador recibió permiso, pero esta ventana no puede usar el micrófono.',
+    'service-not-allowed':'El navegador bloqueó el servicio de dictado.',
+    'audio-capture':'No se encontró un micrófono disponible.',
+    'no-speech':'No detecté voz. Toca el micrófono e inténtalo otra vez.',
+    'network':'El servicio de reconocimiento de voz no pudo conectarse. Revisa tu conexión.',
+    'aborted':'Dictado detenido.'
+  };
+  return map[code]||('No se pudo usar el micrófono: '+code);
+}
+
+async function preflightMicrophone(){
+  // En la versión que funcionó de Mis Pendientes, el punto clave fue ejecutar
+  // la interfaz como página independiente (HTTPS), no dentro del iframe de Apps Script.
+  if(inIframe() && microphonePolicyBlocked()){
+    throw new Error('IFRAME_POLICY');
+  }
+  if(!window.isSecureContext && location.protocol!=='file:'){
+    throw new Error('INSECURE');
+  }
+  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      stream.getTracks().forEach(t=>t.stop());
+    }catch(e){
+      if(e && (e.name==='NotAllowedError'||e.name==='SecurityError')) throw new Error(inIframe()?'IFRAME_POLICY':'PERMISSION');
+      if(e && e.name==='NotFoundError') throw new Error('NO_MIC');
+      // No bloqueamos SpeechRecognition por otros errores transitorios de getUserMedia.
+    }
+  }
+}
+
+async function startVoice(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+  if(recognition){
+    try{recognition.stop();}catch(e){}
+    return;
+  }
+
+  if(!SR){
+    $('msg').textContent='Este navegador no ofrece dictado directo. En Windows puedes usar Windows + H; en iPhone/tableta usa el micrófono del teclado.';
+    $('voiceStatus').textContent='Dictado del teclado disponible';
+    $('request').focus();
+    return;
+  }
+
+  setVoiceUi(true,'Activando micrófono…');
+  $('msg').textContent='Activando micrófono…';
+
+  try{
+    await preflightMicrophone();
+  }catch(e){
+    recognition=null;
+    setVoiceUi(false,'Toca el micrófono para dictar');
+    if(e.message==='IFRAME_POLICY'){
+      $('msg').textContent='El permiso ya está dado. El bloqueo viene de la ventana interna de Apps Script. Abre esta interfaz como página independiente HTTPS, igual que Mis Pendientes.';
+    }else if(e.message==='INSECURE'){
+      $('msg').textContent='El micrófono necesita abrirse desde HTTPS.';
+    }else if(e.message==='NO_MIC'){
+      $('msg').textContent='No se encontró un micrófono disponible.';
+    }else{
+      $('msg').textContent='Chrome no permitió abrir el micrófono. Revisa el permiso del sitio y vuelve a intentarlo.';
+    }
+    return;
+  }
+
+  const r=new SR();
+  recognition=r;
+  r.lang='es-MX';
+  r.continuous=false;
+  r.interimResults=true;
+  r.maxAlternatives=1;
+
+  let committed='';
+  const base=$('request').value.trim();
+  let hadError=false;
+
+  r.onstart=()=>{
+    setVoiceUi(true,'Escuchando… toca otra vez para detener');
+    $('msg').textContent='Escuchando…';
+  };
+
+  r.onresult=e=>{
+    let finalText='',interimText='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const phrase=(e.results[i][0].transcript||'').trim();
+      if(e.results[i].isFinal) finalText+=(finalText?' ':'')+phrase;
+      else interimText+=(interimText?' ':'')+phrase;
+    }
+    if(finalText){
+      committed=(committed+' '+finalText).trim();
+      $('request').value=[base,committed].filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
+    }
+    if(interimText){
+      $('voiceStatus').textContent='Escuchando: '+interimText;
+      $('msg').textContent='Escuchando…';
+    }
+  };
+
+  r.onerror=e=>{
+    hadError=true;
+    let m=voiceErrorMessage(e.error);
+    if((e.error==='not-allowed'||e.error==='service-not-allowed')&&inIframe()){
+      m='El permiso de Chrome está activo, pero Apps Script está bloqueando el micrófono dentro de su ventana. Usa la página independiente HTTPS, igual que Mis Pendientes.';
+    }
+    $('msg').textContent=m;
+    $('voiceStatus').textContent=m;
+  };
+
+  r.onend=()=>{
+    recognition=null;
+    if(hadError){
+      setVoiceUi(false,$('voiceStatus').textContent||'Toca el micrófono para dictar');
+    }else{
+      setVoiceUi(false,'Dictado listo. Revisa el texto y pulsa Interpretar.');
+      $('msg').textContent='Dictado listo. Revisa el texto y pulsa Interpretar.';
+    }
+    $('request').focus();
+  };
+
+  try{r.start();}
+  catch(e){
+    recognition=null;
+    setVoiceUi(false,'Toca el micrófono para dictar');
+    $('msg').textContent='No se pudo iniciar el micrófono. Intenta nuevamente.';
+  }
+}
+
+$('micBtn').setAttribute('aria-pressed','false');
+$('micBtn').addEventListener('click',startVoice);
+$('voiceBtn').addEventListener('click',startVoice);
+
+// Mensaje útil si el archivo se abre dentro de Apps Script y la política de iframe bloquea micrófono.
+window.addEventListener('load',()=>{
+  if(inIframe()&&microphonePolicyBlocked()){
+    $('voiceStatus').textContent='Micrófono: abrir versión independiente HTTPS';
+  }
+});
+
+document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.cat').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');
+  $('producto').value=btn.dataset.name;
+  if(!$('request').value.trim())$('request').value=btn.dataset.name+' ';
+  $('request').focus();
+}));
+</script>
+</body>
+</html>
