@@ -81,6 +81,80 @@ details.interp .inside{padding:0 10px 10px;display:grid;grid-template-columns:1f
 #interpretWarnings{grid-column:1/-1;padding:9px 11px;border-radius:10px;background:#f8fafc;color:#475569;font-size:13px;line-height:1.35}
 @media(max-width:600px){details.interp .inside{grid-template-columns:1fr}}
 
+
+/* ===== v5.1 · VISTA COMPACTA + CONTROL ODP INTEGRADO ===== */
+:root{--compact-gap:8px}
+.app{grid-template-columns:205px 1fr}
+aside{padding:14px 10px;gap:10px}
+.brand{gap:9px;padding:2px 6px 8px}
+.logo{width:44px;height:44px;border-width:3px}
+.brand b{font-size:19px}.brand small{font-size:11px}
+nav{gap:3px}
+nav button{padding:9px 10px;min-height:38px;font-size:14px;border-radius:10px}
+main{padding:12px 14px}
+.top{margin-bottom:9px;align-items:center}
+h1{font-size:clamp(25px,3vw,36px)}
+.sub{margin-top:2px;font-size:13px}
+.status{gap:6px}
+.pill{padding:7px 9px;border-radius:10px;font-size:13px}
+.gridTop{grid-template-columns:minmax(430px,.92fr) minmax(570px,1.08fr);gap:10px;align-items:start}
+.card{border-radius:14px;padding:11px}
+.card h2{margin:0 0 7px;font-size:18px}
+textarea{min-height:84px;max-height:105px;padding:10px 12px;font-size:16px;border-radius:11px}
+.mic{width:54px;height:54px;font-size:24px;margin:4px auto;box-shadow:0 0 0 7px #7c3aed12}
+@keyframes pulse{50%{box-shadow:0 0 0 12px #ec489922}}
+.voiceStatus{font-size:12px;min-height:17px;margin:0}
+.modeRow,.actionRow{gap:7px;margin-top:7px}
+.btn{padding:8px 11px;min-height:38px;border-radius:10px;font-size:14px}
+#msg{min-height:18px;margin:6px 0 0;font-size:13px}
+.fields{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.field{border-radius:9px;padding:6px 8px;min-height:50px}
+.field label{font-size:10px;line-height:1.05}
+.field input,.field select{padding:2px 0 0;font-size:14px;line-height:1.15}
+.sectionTitle{padding:5px 7px;margin-top:2px;font-size:11px;border-radius:8px}
+details.interp{border-radius:9px}
+details.interp>summary{padding:7px 9px;font-size:12px}
+details.interp .inside{padding:0 7px 7px;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+#interpretWarnings{padding:6px 8px;font-size:11px;line-height:1.25}
+.summary{margin-top:10px}
+th,td{padding:7px 9px;font-size:13px}
+.notice{margin-top:7px;padding:7px 9px;font-size:12px}
+.categories{grid-template-columns:repeat(10,1fr);gap:6px;margin-top:9px}
+.cat{border-radius:10px;padding:6px;min-height:66px}
+.cat .ico{font-size:24px;margin-bottom:2px}.cat b{font-size:10px;line-height:1.05}
+.flow{display:none}
+.topCompactTools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.view{display:block}.view.hidden{display:none}
+.controlShell{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:calc(100vh - 30px)}
+.controlBar{display:flex;align-items:center;gap:8px;padding:9px 11px;border-bottom:1px solid var(--line);background:#f8fafc}
+.controlBar h2{margin:0;font-size:18px;flex:1}
+.controlBar button{border:0;border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer}
+.controlBack{background:#e8eef7;color:#334155}
+.controlConfig{background:#ede9fe;color:#6d28d9}
+#controlFrame{width:100%;height:calc(100vh - 85px);border:0;background:#fff}
+.controlSetup{max-width:760px;margin:22px auto;padding:22px;background:#fff;border:1px solid var(--line);border-radius:16px}
+.controlSetup h2{margin-top:0}
+.controlSetup input{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px}
+.controlSetup .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.controlSetup button{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#0ea5e9;color:white}
+.controlSetup .muted{font-size:12px;color:#64748b;margin-top:8px}
+@media(max-width:1250px){
+  .gridTop{grid-template-columns:1fr}
+  .fields,details.interp .inside{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .categories{grid-template-columns:repeat(5,1fr)}
+}
+@media(max-width:980px){
+  .app{grid-template-columns:1fr}aside{display:none}
+  .fields,details.interp .inside{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  main{padding:8px}.top{align-items:flex-start}.status{display:none}
+  .fields,details.interp .inside{grid-template-columns:1fr 1fr}
+  .categories{grid-template-columns:repeat(2,1fr)}
+  .mic{width:64px;height:64px}
+  #controlFrame{height:calc(100vh - 70px)}
+}
+
 </style>
 </head>
 <body>
@@ -88,7 +162,7 @@ details.interp .inside{padding:0 10px 10px;display:grid;grid-template-columns:1f
   <aside>
     <div class="brand"><div class="logo"></div><div><b>INFLASTIC</b><small>Creamos experiencias inflables</small></div></div>
     <nav>
-      <button>⌂ Inicio</button><button>▦ Tablero Principal</button><button class="active">✦ Cotizador Principal</button>
+      <button>⌂ Inicio</button><button>▦ Tablero Principal</button><button class="active" id="navCotizador">✦ Cotizador Principal</button><button id="navControl">▣ Control ODP</button>
       <button>▣ Órdenes de Producción</button><button>◇ Inventario</button><button>🛒 Compras y Proveedores</button>
       <button>♙ Clientes</button><button>🚚 Entregas / Logística</button><button>◎ Calidad</button>
       <button>▥ Reportes</button><button>🛠 Mantenimiento</button><button>⚙ Catálogos / Configuración</button>
@@ -97,6 +171,7 @@ details.interp .inside{padding:0 10px 10px;display:grid;grid-template-columns:1f
   </aside>
 
   <main>
+    <div id="cotizadorView" class="view">
     <div class="top">
       <div><h1>Cotizador Principal con IA ✦</h1><div class="sub">Escribe o dicta tu solicitud. La IA la interpreta automáticamente para que solo revises los datos antes de cotizar.</div></div>
       <div class="status"><div class="pill" id="datePill">📅</div><div class="pill" id="timePill">🕒</div><div class="pill">🟢 Conectado</div></div>
@@ -104,7 +179,7 @@ details.interp .inside{padding:0 10px 10px;display:grid;grid-template-columns:1f
 
     <div class="gridTop">
       <section class="card aiCard">
-        <h2>✦ Cotizar con IA <span style="font-size:12px;color:#667085;font-weight:700">v5.0</span></h2>
+        <h2>✦ Cotizar con IA <span style="font-size:12px;color:#667085;font-weight:700">v5.1</span></h2>
         <textarea id="request" maxlength="600" placeholder="Ej.: Pelota 50 cm, 2 tintas, 2 gajos mismo logo, cotizar 5, 10, 15, 50 y 200 piezas"></textarea>
         <button id="micBtn" class="mic" type="button" aria-label="Dictar solicitud">🎙</button>
         <div id="voiceStatus" class="voiceStatus">Toca el micrófono para dictar</div>
@@ -122,25 +197,36 @@ details.interp .inside{padding:0 10px 10px;display:grid;grid-template-columns:1f
       </section>
 
       <section class="card">
-        <h2>🤖 La IA interpretó <span style="font-size:12px;color:#667085;font-weight:700">v5.0 · ESF-001</span></h2>
+        <h2>🤖 La IA interpretó <span style="font-size:12px;color:#667085;font-weight:700">v5.1 · ESF-001</span></h2>
         <div class="fields">
-          <div class="sectionTitle">Producto</div>
+          <div class="sectionTitle">Datos principales</div>
           <div class="field"><label>Producto</label><input id="producto"></div>
-          <div class="field"><label>Familia</label><input id="familia"></div>
           <div class="field"><label>Diámetro / medida (cm)</label><input id="medida" inputmode="decimal"></div>
-          <div class="field"><label>Calibre PVC</label><input id="calibre" inputmode="decimal"></div>
-          <div class="field"><label>Color / combinación</label><input id="color"></div>
           <div class="field"><label>Cantidades</label><input id="cantidades" placeholder="Ej. 5, 10, 20"></div>
-          <div class="field"><label>Modo de gajos</label><input id="modoGajos"></div>
-          <div class="field"><label>Gajos manuales</label><input id="gajosManuales" inputmode="numeric"></div>
-          <div class="field"><label>Válvula</label><input id="valvula"></div>
-          <div class="field"><label>Bolsa / empaque</label><input id="bolsa"></div>
-          <div class="field"><label>Accesorios extra $/pza</label><input id="accesoriosExtra" inputmode="decimal"></div>
-          <div class="field"><label>Desarrollo especial $/lote</label><input id="desarrolloEspecial" inputmode="decimal"></div>
-          <div class="field"><label>Aplicar IVA</label><input id="iva"></div>
-          <div class="field"><label>Material</label><input id="material"></div>
+          <div class="field"><label>Calibre PVC</label><input id="calibre" inputmode="decimal"></div>
 
-          <details class="interp" open>
+          <div class="field"><label>Tipo impresión</label><input id="impresionTop" readonly></div>
+          <div class="field"><label>No. tintas</label><input id="tintasTop" readonly></div>
+          <div class="field"><label>Vistas</label><input id="vistasTop" readonly></div>
+          <div class="field"><label>Gajos / vista</label><input id="gajosVistaTop" readonly></div>
+
+          <details class="interp">
+            <summary>⚙ Producto / material / accesorios</summary>
+            <div class="inside">
+              <div class="field"><label>Familia</label><input id="familia"></div>
+              <div class="field"><label>Color / combinación</label><input id="color"></div>
+              <div class="field"><label>Modo de gajos</label><input id="modoGajos"></div>
+              <div class="field"><label>Gajos manuales</label><input id="gajosManuales" inputmode="numeric"></div>
+              <div class="field"><label>Válvula</label><input id="valvula"></div>
+              <div class="field"><label>Bolsa / empaque</label><input id="bolsa"></div>
+              <div class="field"><label>Accesorios extra $/pza</label><input id="accesoriosExtra" inputmode="decimal"></div>
+              <div class="field"><label>Desarrollo especial $/lote</label><input id="desarrolloEspecial" inputmode="decimal"></div>
+              <div class="field"><label>Aplicar IVA</label><input id="iva"></div>
+              <div class="field"><label>Material</label><input id="material"></div>
+            </div>
+          </details>
+
+          <details class="interp">
             <summary>🖨 Impresión / diseño</summary>
             <div class="inside">
               <div class="field"><label>Tipo impresión</label><input id="impresion"></div>
@@ -212,6 +298,27 @@ details.interp .inside{padding:0 10px 10px;display:grid;grid-template-columns:1f
       <div class="step"><span class="n">3</span><b>Revisar datos</b><div class="sub">Corregir antes de calcular</div></div>
       <div class="step"><span class="n">4</span><b>Generar cotización</b><div class="sub">Con motor real del producto</div></div>
     </section>
+    </div>
+
+    <div id="controlView" class="view hidden">
+      <section class="controlShell">
+        <div class="controlBar">
+          <button type="button" class="controlBack" id="backCotizador">← Cotizador</button>
+          <h2>▣ CONTROL ODP INFLASTIC</h2>
+          <button type="button" class="controlConfig" id="configControl">⚙ Cambiar URL</button>
+        </div>
+        <div id="controlSetup" class="controlSetup">
+          <h2>Conectar CONTROL ODP</h2>
+          <p>Pega una sola vez la URL de tu Web App de CONTROL ODP. Después se abrirá dentro de este mismo Cotizador Principal.</p>
+          <input id="controlUrlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec">
+          <div class="row">
+            <button type="button" id="saveControlUrl">Guardar y abrir Control</button>
+          </div>
+          <div class="muted">La URL queda guardada únicamente en este navegador. CONTROL ODP conserva su propia clave y sesión.</div>
+        </div>
+        <iframe id="controlFrame" title="CONTROL ODP INFLASTIC" hidden></iframe>
+      </section>
+    </div>
   </main>
 </div>
 
@@ -274,6 +381,7 @@ function fill(d){
     ? '<span class="badgeWarn">Revisar</span> '+d.alertas.join(' · ')
     : 'Interpretación completa. Revisa los datos antes de cotizar.';
   $('msg').textContent='Interpretación lista ('+(d.fuente||'IA')+'). Revisa los datos antes de cotizar.';
+  if(typeof syncCompactPrintFields==='function') syncCompactPrintFields();
 }
 function normalizeSpeechText(text){
   let s=String(text||'').toLowerCase()
@@ -477,7 +585,7 @@ function interpretLocalBrowser(text){
     area_digital_manual,taxi_digital,costo_taxi,arte,
     elevar,tubo_interno,diam_tubo_m,altitud_m,incluir_servicio,distancia_km,casetas,personas,
     horas_totales,viaticos_adicionales,hotel_otros,modalidad_servicio,dias,horas_dia,noches,piola,peso_extra,
-    observacion_servicio:'',alertas,confianza:0.99,fuente:'Intérprete ESF-001 v5.0'
+    observacion_servicio:'',alertas,confianza:0.99,fuente:'Intérprete ESF-001 v5.1'
   };
 }
 function hasAppsScriptBridge(){
@@ -641,6 +749,7 @@ $('clearBtn').addEventListener('click',()=>{
   $('request').value=''; ['producto','familia','medida','calibre','color','cantidades','modoGajos','gajosManuales','valvula','bolsa','accesoriosExtra','desarrolloEspecial','iva','material','impresion','gajosVista','vistas','gajos','tintas','disenos','tipoDiseno','areaDigital','taxiDigital','costoTaxi','arte','elevar','tubo','diamTubo','altitud','servicio','distancia','casetas','personas','horasTotales','viaticos','hotel','modalidad','dias','horasDia','noches','piola','pesoExtra','obsServicio'].forEach(id=>$(id).value='');
   $('quoteBody').innerHTML='<tr><td colspan="4">Interpreta una solicitud para comenzar.</td></tr>';
   $('msg').textContent='';
+  if(typeof syncCompactPrintFields==='function') syncCompactPrintFields();
 });
 
 $('writeBtn').addEventListener('click',()=>$('request').focus());
@@ -821,6 +930,88 @@ document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>
   $('request').focus();
   scheduleInterpret(400);
 }));
+
+/* ===== v5.1 · ESPEJO COMPACTO DE IMPRESIÓN ===== */
+function syncCompactPrintFields(){
+  const pairs=[
+    ['impresion','impresionTop'],
+    ['tintas','tintasTop'],
+    ['vistas','vistasTop'],
+    ['gajosVista','gajosVistaTop']
+  ];
+  pairs.forEach(([src,dst])=>{
+    const a=$(src),b=$(dst);
+    if(a&&b) b.value=a.value||'';
+  });
+}
+['impresion','tintas','vistas','gajosVista'].forEach(id=>{
+  const el=$(id);
+  if(el) el.addEventListener('input',syncCompactPrintFields);
+});
+
+/* ===== v5.1 · CONTROL ODP DENTRO DEL COTIZADOR ===== */
+const CONTROL_URL_KEY='INFLASTIC_CONTROL_ODP_URL_V1';
+
+function setActiveNav(which){
+  const a=$('navCotizador'),b=$('navControl');
+  if(a) a.classList.toggle('active',which==='cotizador');
+  if(b) b.classList.toggle('active',which==='control');
+}
+function showCotizador(){
+  $('cotizadorView')?.classList.remove('hidden');
+  $('controlView')?.classList.add('hidden');
+  setActiveNav('cotizador');
+}
+function validControlUrl(url){
+  try{
+    const u=new URL(String(url||'').trim());
+    return u.protocol==='https:' && (u.hostname==='script.google.com' || u.hostname.endsWith('.googleusercontent.com'));
+  }catch(e){return false}
+}
+function openControl(){
+  $('cotizadorView')?.classList.add('hidden');
+  $('controlView')?.classList.remove('hidden');
+  setActiveNav('control');
+  const url=localStorage.getItem(CONTROL_URL_KEY)||'';
+  const setup=$('controlSetup'),frame=$('controlFrame'),input=$('controlUrlInput');
+  if(input) input.value=url;
+  if(url && validControlUrl(url)){
+    setup.hidden=true;
+    frame.hidden=false;
+    if(frame.src!==url) frame.src=url;
+  }else{
+    frame.hidden=true;
+    setup.hidden=false;
+  }
+}
+$('navCotizador')?.addEventListener('click',showCotizador);
+$('navControl')?.addEventListener('click',openControl);
+$('backCotizador')?.addEventListener('click',showCotizador);
+$('configControl')?.addEventListener('click',()=>{
+  const setup=$('controlSetup'),frame=$('controlFrame');
+  if(setup) setup.hidden=false;
+  if(frame) frame.hidden=true;
+  $('controlUrlInput')?.focus();
+});
+$('saveControlUrl')?.addEventListener('click',()=>{
+  const url=String($('controlUrlInput')?.value||'').trim();
+  if(!validControlUrl(url)){
+    alert('Pega la URL HTTPS de la Web App de CONTROL ODP (script.google.com/macros/s/.../exec).');
+    return;
+  }
+  localStorage.setItem(CONTROL_URL_KEY,url);
+  const setup=$('controlSetup'),frame=$('controlFrame');
+  setup.hidden=true; frame.hidden=false; frame.src=url;
+});
+
+/* Actualiza el resumen compacto después de cualquier interpretación. */
+const _syncCompactObserver=new MutationObserver(syncCompactPrintFields);
+['impresion','tintas','vistas','gajosVista'].forEach(id=>{
+  const el=$(id);
+  if(el) _syncCompactObserver.observe(el,{attributes:true,childList:true,subtree:true});
+});
+setTimeout(syncCompactPrintFields,0);
+
 </script>
 </body>
 </html>
