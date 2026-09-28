@@ -70,6 +70,17 @@ th{color:#0f766e;background:#f0fdfa}
 .fileInput{display:none}
 @media(max-width:980px){.app{grid-template-columns:1fr}aside{display:none}.gridTop{grid-template-columns:1fr}.categories{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){main{padding:14px}.top{flex-direction:column}.status{justify-content:flex-start}.fields{grid-template-columns:1fr}.full{grid-column:auto}.categories{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:1fr 1fr}.btn{flex:1}.mic{width:96px;height:96px}}
+
+.sectionTitle{grid-column:1/-1;font-size:13px;font-weight:900;color:#334155;margin-top:6px;padding:8px 10px;background:#eef6f5;border-radius:10px}
+.field select{border:0;background:transparent;width:100%;font-weight:750;color:var(--ink);padding:4px 0 0;outline:none}
+details.interp{grid-column:1/-1;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
+details.interp>summary{cursor:pointer;padding:10px 12px;font-weight:900;color:#0f766e;list-style:none}
+details.interp>summary::-webkit-details-marker{display:none}
+details.interp .inside{padding:0 10px 10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.badgeWarn{display:inline-block;padding:5px 8px;border-radius:999px;background:#fff7ed;color:#9a3412;font-size:12px;font-weight:800}
+#interpretWarnings{grid-column:1/-1;padding:9px 11px;border-radius:10px;background:#f8fafc;color:#475569;font-size:13px;line-height:1.35}
+@media(max-width:600px){details.interp .inside{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -93,7 +104,7 @@ th{color:#0f766e;background:#f0fdfa}
 
     <div class="gridTop">
       <section class="card aiCard">
-        <h2>✦ Cotizar con IA <span style="font-size:12px;color:#667085;font-weight:700">v4.4</span></h2>
+        <h2>✦ Cotizar con IA <span style="font-size:12px;color:#667085;font-weight:700">v5.0</span></h2>
         <textarea id="request" maxlength="600" placeholder="Ej.: Pelota 50 cm, 2 tintas, 2 gajos mismo logo, cotizar 5, 10, 15, 50 y 200 piezas"></textarea>
         <button id="micBtn" class="mic" type="button" aria-label="Dictar solicitud">🎙</button>
         <div id="voiceStatus" class="voiceStatus">Toca el micrófono para dictar</div>
@@ -111,17 +122,65 @@ th{color:#0f766e;background:#f0fdfa}
       </section>
 
       <section class="card">
-        <h2>🤖 La IA interpretó</h2>
+        <h2>🤖 La IA interpretó <span style="font-size:12px;color:#667085;font-weight:700">v5.0 · ESF-001</span></h2>
         <div class="fields">
+          <div class="sectionTitle">Producto</div>
           <div class="field"><label>Producto</label><input id="producto"></div>
           <div class="field"><label>Familia</label><input id="familia"></div>
-          <div class="field"><label>Medida (cm)</label><input id="medida" inputmode="decimal"></div>
+          <div class="field"><label>Diámetro / medida (cm)</label><input id="medida" inputmode="decimal"></div>
+          <div class="field"><label>Calibre PVC</label><input id="calibre" inputmode="decimal"></div>
+          <div class="field"><label>Color / combinación</label><input id="color"></div>
+          <div class="field"><label>Cantidades</label><input id="cantidades" placeholder="Ej. 5, 10, 20"></div>
+          <div class="field"><label>Modo de gajos</label><input id="modoGajos"></div>
+          <div class="field"><label>Gajos manuales</label><input id="gajosManuales" inputmode="numeric"></div>
+          <div class="field"><label>Válvula</label><input id="valvula"></div>
+          <div class="field"><label>Bolsa / empaque</label><input id="bolsa"></div>
+          <div class="field"><label>Accesorios extra $/pza</label><input id="accesoriosExtra" inputmode="decimal"></div>
+          <div class="field"><label>Desarrollo especial $/lote</label><input id="desarrolloEspecial" inputmode="decimal"></div>
+          <div class="field"><label>Aplicar IVA</label><input id="iva"></div>
           <div class="field"><label>Material</label><input id="material"></div>
-          <div class="field"><label>Impresión</label><input id="impresion"></div>
-          <div class="field"><label>No. de tintas</label><input id="tintas" inputmode="numeric"></div>
-          <div class="field"><label>Gajos impresos</label><input id="gajos" inputmode="numeric"></div>
-          <div class="field"><label>Arte</label><input id="arte"></div>
-          <div class="field full"><label>Cantidades</label><input id="cantidades" placeholder="Ej. 5, 10, 15, 50, 200"></div>
+
+          <details class="interp" open>
+            <summary>🖨 Impresión / diseño</summary>
+            <div class="inside">
+              <div class="field"><label>Tipo impresión</label><input id="impresion"></div>
+              <div class="field"><label>Gajos por vista</label><input id="gajosVista" inputmode="numeric"></div>
+              <div class="field"><label>Número de vistas</label><input id="vistas" inputmode="numeric"></div>
+              <div class="field"><label>Gajos impresos totales</label><input id="gajos" inputmode="numeric"></div>
+              <div class="field"><label>No. de tintas</label><input id="tintas" inputmode="numeric"></div>
+              <div class="field"><label>Diseños diferentes</label><input id="disenos" inputmode="numeric"></div>
+              <div class="field"><label>Tipo de diseño</label><input id="tipoDiseno"></div>
+              <div class="field"><label>Área digital manual m²/pza</label><input id="areaDigital" inputmode="decimal"></div>
+              <div class="field"><label>Incluir taxi digital</label><input id="taxiDigital"></div>
+              <div class="field"><label>Costo taxi digital $/lote</label><input id="costoTaxi" inputmode="decimal"></div>
+              <div class="field full"><label>Arte / notas de impresión</label><input id="arte"></div>
+            </div>
+          </details>
+
+          <details class="interp">
+            <summary>🎈 Elevación / tubo / instalación</summary>
+            <div class="inside">
+              <div class="field"><label>Preparar para elevar</label><input id="elevar"></div>
+              <div class="field"><label>Tubo interno polo a polo</label><input id="tubo"></div>
+              <div class="field"><label>Diámetro tubo interno (m)</label><input id="diamTubo" inputmode="decimal"></div>
+              <div class="field"><label>Altitud instalación (m s.n.m.)</label><input id="altitud" inputmode="numeric"></div>
+              <div class="field"><label>Incluir servicio instalación</label><input id="servicio"></div>
+              <div class="field"><label>Distancia un sentido (km)</label><input id="distancia" inputmode="decimal"></div>
+              <div class="field"><label>Casetas viaje redondo ($)</label><input id="casetas" inputmode="decimal"></div>
+              <div class="field"><label>Personas para servicio</label><input id="personas" inputmode="numeric"></div>
+              <div class="field"><label>Horas totales (Por hora)</label><input id="horasTotales" inputmode="decimal"></div>
+              <div class="field"><label>Viáticos adicionales ($)</label><input id="viaticos" inputmode="decimal"></div>
+              <div class="field"><label>Hotel / otros gastos ($)</label><input id="hotel" inputmode="decimal"></div>
+              <div class="field"><label>Modalidad servicio</label><input id="modalidad"></div>
+              <div class="field"><label>Número de días</label><input id="dias" inputmode="numeric"></div>
+              <div class="field"><label>Horas por día</label><input id="horasDia" inputmode="decimal"></div>
+              <div class="field"><label>Noches de hotel</label><input id="noches" inputmode="numeric"></div>
+              <div class="field"><label>Tipo de piola</label><input id="piola"></div>
+              <div class="field"><label>Peso extra accesorios/refuerzos kg/pza</label><input id="pesoExtra" inputmode="decimal"></div>
+              <div class="field full"><label>Observación servicio / accesorios</label><input id="obsServicio"></div>
+            </div>
+          </details>
+          <div id="interpretWarnings">Describe el producto como lo harías normalmente. Los campos no mencionados usan únicamente los valores predeterminados del cotizador ESF-001.</div>
         </div>
       </section>
     </div>
@@ -131,7 +190,7 @@ th{color:#0f766e;background:#f0fdfa}
       <div class="tableWrap">
         <table><thead><tr><th>Cantidad</th><th>Precio unitario</th><th>Importe</th><th>Estado</th></tr></thead><tbody id="quoteBody"><tr><td colspan="4">Interpreta una solicitud para comenzar.</td></tr></tbody></table>
       </div>
-      <div class="notice" id="engineNotice">El motor de precios reales todavía no está conectado. Esta pantalla no inventará precios.</div>
+      <div class="notice" id="engineNotice">Motor Pelotas / Esferas ESF-001 integrado con variables del cotizador maestro. Revisa los datos interpretados antes de usar el precio.</div>
     </section>
 
     <section class="categories" id="categories">
@@ -168,135 +227,259 @@ function setNow(){
 }
 setNow(); setInterval(setNow,30000);
 
+function numVal(id){
+  const v=$(id).value.trim().replace(',','.');
+  return v===''?null:Number(v);
+}
 function formData(){
   return {
-    producto:$('producto').value.trim(),
-    familia:$('familia').value.trim(),
-    medida_cm:$('medida').value?Number($('medida').value):null,
-    material:$('material').value.trim(),
-    impresion:$('impresion').value.trim(),
-    tintas:$('tintas').value?Number($('tintas').value):null,
-    gajos_impresos:$('gajos').value?Number($('gajos').value):null,
-    arte:$('arte').value.trim(),
-    cantidades:$('cantidades').value.split(/[,;\s]+/).map(Number).filter(n=>Number.isFinite(n)&&n>0)
+    producto:$('producto').value.trim(), familia:$('familia').value.trim(),
+    medida_cm:numVal('medida'), calibre:numVal('calibre'), color:$('color').value.trim(),
+    cantidades:$('cantidades').value.split(/[,;\s]+/).map(Number).filter(n=>Number.isFinite(n)&&n>0),
+    modo_gajos:$('modoGajos').value.trim(), gajos_manuales:numVal('gajosManuales'),
+    valvula:$('valvula').value.trim(), bolsa:$('bolsa').value.trim(),
+    accesorios_extra:numVal('accesoriosExtra')||0, desarrollo_especial:numVal('desarrolloEspecial')||0,
+    aplicar_iva:$('iva').value.trim()||'SI', material:$('material').value.trim(),
+    impresion:$('impresion').value.trim(), gajos_por_vista:numVal('gajosVista'),
+    vistas:numVal('vistas'), gajos_impresos:numVal('gajos'), tintas:numVal('tintas'),
+    disenos_diferentes:numVal('disenos'), tipo_diseno:$('tipoDiseno').value.trim(),
+    area_digital_manual:numVal('areaDigital')||0, taxi_digital:$('taxiDigital').value.trim(),
+    costo_taxi:numVal('costoTaxi')||0, arte:$('arte').value.trim(),
+    elevar:$('elevar').value.trim(), tubo_interno:$('tubo').value.trim(),
+    diam_tubo_m:numVal('diamTubo'), altitud_m:numVal('altitud'),
+    incluir_servicio:$('servicio').value.trim(), distancia_km:numVal('distancia')||0,
+    casetas:numVal('casetas')||0, personas:numVal('personas'), horas_totales:numVal('horasTotales'),
+    viaticos_adicionales:numVal('viaticos')||0, hotel_otros:numVal('hotel')||0,
+    modalidad_servicio:$('modalidad').value.trim(), dias:numVal('dias'), horas_dia:numVal('horasDia'),
+    noches:numVal('noches'), piola:$('piola').value.trim(), peso_extra:numVal('pesoExtra')||0,
+    observacion_servicio:$('obsServicio').value.trim()
   };
 }
+function put(id,v){ $(id).value=(v===null||v===undefined)?'':v; }
 function fill(d){
   lastData=d;
-  $('producto').value=d.producto||'';$('familia').value=d.familia||'';$('medida').value=d.medida_cm??'';
-  $('material').value=d.material||'';$('impresion').value=d.impresion||'';$('tintas').value=d.tintas??'';
-  $('gajos').value=d.gajos_impresos??'';$('arte').value=d.arte||'';$('cantidades').value=(d.cantidades||[]).join(', ');
+  put('producto',d.producto); put('familia',d.familia); put('medida',d.medida_cm);
+  put('calibre',d.calibre); put('color',d.color); put('cantidades',(d.cantidades||[]).join(', '));
+  put('modoGajos',d.modo_gajos); put('gajosManuales',d.gajos_manuales); put('valvula',d.valvula); put('bolsa',d.bolsa);
+  put('accesoriosExtra',d.accesorios_extra); put('desarrolloEspecial',d.desarrollo_especial); put('iva',d.aplicar_iva);
+  put('material',d.material); put('impresion',d.impresion); put('gajosVista',d.gajos_por_vista); put('vistas',d.vistas);
+  put('gajos',d.gajos_impresos); put('tintas',d.tintas); put('disenos',d.disenos_diferentes); put('tipoDiseno',d.tipo_diseno);
+  put('areaDigital',d.area_digital_manual); put('taxiDigital',d.taxi_digital); put('costoTaxi',d.costo_taxi); put('arte',d.arte);
+  put('elevar',d.elevar); put('tubo',d.tubo_interno); put('diamTubo',d.diam_tubo_m); put('altitud',d.altitud_m);
+  put('servicio',d.incluir_servicio); put('distancia',d.distancia_km); put('casetas',d.casetas); put('personas',d.personas);
+  put('horasTotales',d.horas_totales); put('viaticos',d.viaticos_adicionales); put('hotel',d.hotel_otros);
+  put('modalidad',d.modalidad_servicio); put('dias',d.dias); put('horasDia',d.horas_dia); put('noches',d.noches);
+  put('piola',d.piola); put('pesoExtra',d.peso_extra); put('obsServicio',d.observacion_servicio);
+  $('interpretWarnings').innerHTML=(d.alertas&&d.alertas.length)
+    ? '<span class="badgeWarn">Revisar</span> '+d.alertas.join(' · ')
+    : 'Interpretación completa. Revisa los datos antes de cotizar.';
   $('msg').textContent='Interpretación lista ('+(d.fuente||'IA')+'). Revisa los datos antes de cotizar.';
 }
 function normalizeSpeechText(text){
-  return String(text||'')
-    .toLowerCase()
-    .replace(/\u00a0/g,' ')
-    .replace(/[–—]/g,'-')
-    .replace(/\s+/g,' ')
-    .trim();
-}
+  let s=String(text||'').toLowerCase()
+    .replace(/\u00a0/g,' ').replace(/[–—]/g,'-')
+    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u')
+    .replace(/\s+/g,' ').trim();
 
+  // Fracciones y expresiones comunes del dictado.
+  s=s.replace(/\bmetro y medio\b/g,'1.5 metros')
+     .replace(/\bmetros y medio\b/g,'1.5 metros')
+     .replace(/\bmedio metro\b/g,'0.5 metros')
+     .replace(/\bun metro\b/g,'1 metro')
+     .replace(/\buna tinta\b/g,'1 tinta')
+     .replace(/\buna vista\b/g,'1 vista')
+     .replace(/\bun gajo\b/g,'1 gajo')
+     .replace(/\bun diseno\b/g,'1 diseno')
+     .replace(/\buna pieza\b/g,'1 pieza')
+     .replace(/\bun dia\b/g,'1 dia')
+     .replace(/\buna noche\b/g,'1 noche')
+     .replace(/\buna persona\b/g,'1 persona')
+     .replace(/\buna hora\b/g,'1 hora');
+
+  const simple={
+    cero:0,un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,
+    diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,
+    veinte:20,veintiuno:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,veintiseis:26,veintisiete:27,veintiocho:28,veintinueve:29,
+    treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100
+  };
+  const tens={treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90};
+  const ones={un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9};
+  s=s.replace(/\b(treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa)\s+y\s+(un|uno|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve)\b/g,
+    (_,a,b)=>String(tens[a]+ones[b]));
+  // cientos sencillos
+  s=s.replace(/\b(doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos)\b/g,
+    m=>String({doscientos:200,trescientos:300,cuatrocientos:400,quinientos:500,seiscientos:600,setecientos:700,ochocientos:800,novecientos:900}[m]));
+  for(const [k,v] of Object.entries(simple).sort((a,b)=>b[0].length-a[0].length)){
+    s=s.replace(new RegExp('\\b'+k+'\\b','g'),String(v));
+  }
+  // "2 mil" / "mil"
+  s=s.replace(/\b(\d+)\s+mil\b/g,(_,n)=>String(Number(n)*1000)).replace(/\bmil\b/g,'1000');
+  return s.replace(/\s+/g,' ').trim();
+}
+function yesNoFrom(t, yesRx, noRx, def=''){
+  if(noRx && noRx.test(t)) return 'NO';
+  if(yesRx && yesRx.test(t)) return 'SI';
+  return def;
+}
+function mNumber(t,rx){
+  const m=t.match(rx); return m?Number(String(m[1]).replace(',','.')):null;
+}
 function interpretLocalBrowser(text){
   const raw=String(text||'').trim();
   const t=normalizeSpeechText(raw);
+  const alertas=[];
 
-  let producto='', familia='';
-  if(/\bpelota(?:s)?\b/.test(t)){producto='Pelota';familia='Pelotas / Esferas';}
-  else if(/\besfera(?:s)?\b/.test(t)){producto='Esfera';familia='Pelotas / Esferas';}
-  else if(/\bboya(?:s)?\b/.test(t)){producto='Boya';familia='Boyas';}
-  else if(/\barco(?:s)?\b/.test(t)){producto='Arco';familia='Arcos';}
-  else if(/\bt[uú]nel(?:es)?\b/.test(t)){producto='Túnel';familia='Túneles';}
+  let producto='',familia='';
+  if(/\bpelotas?\b/.test(t)){producto='Pelota';familia='Pelotas / Esferas';}
+  else if(/\besferas?\b/.test(t)){producto='Esfera';familia='Pelotas / Esferas';}
+  else if(/\bboyas?\b/.test(t)){producto='Boya';familia='Boyas';}
+  else if(/\barcos?\b/.test(t)){producto='Arco';familia='Arcos';}
+  else if(/\btunel(?:es)?\b/.test(t)){producto='Túnel';familia='Túneles';}
   else if(/\bsalvavidas?\b/.test(t)){producto='Salvavidas';familia='Salvavidas';}
-  else if(/\bdona(?:s)?\b/.test(t)){producto='Dona';familia='Donas / Portavasos';}
+  else if(/\bdonas?\b/.test(t)){producto='Dona';familia='Donas / Portavasos';}
   else if(/\bportavasos?\b/.test(t)){producto='Portavasos';familia='Donas / Portavasos';}
-  else if(/\bbotella(?:s)?\b/.test(t)){producto='Botella';familia='Botellas';}
+  else if(/\bbotellas?\b/.test(t)){producto='Botella';familia='Botellas';}
   else {producto='Otro';familia='Otros productos';}
 
-  let medida=null;
-  const medidaPatterns=[
-    /(?:di[aá]metro(?:\s+de)?|medida(?:\s+de)?|de)\s*(\d+(?:[.,]\d+)?)\s*(mil[ií]metros?|mm|cent[ií]metros?|cms?|metros?|mts?|mt|m)\b/i,
-    /\b(\d+(?:[.,]\d+)?)\s*(mil[ií]metros?|mm|cent[ií]metros?|cms?|metros?|mts?|mt|m)\b/i
+  // Medida principal: exige unidad para nunca confundir cantidad/tintas/vistas con diámetro.
+  let medida=null, med=null;
+  const medidaRx=[
+    /(?:diametro(?:\s+de)?|medida(?:\s+de)?|de)\s*(\d+(?:[.,]\d+)?)\s*(milimetros?|mm|centimetros?|cms?|cm|metros?|mts?|mt|m)\b/i,
+    /\b(\d+(?:[.,]\d+)?)\s*(milimetros?|mm|centimetros?|cms?|cm|metros?|mts?|mt|m)\b/i
   ];
-  let med=null;
-  for(const rx of medidaPatterns){ med=t.match(rx); if(med) break; }
+  for(const rx of medidaRx){med=t.match(rx);if(med)break;}
   if(med){
-    const v=Number(med[1].replace(',','.'));
-    const u=med[2].toLowerCase();
-    if(/^(mm|mil)/.test(u)) medida=v/10;
-    else if(/^(cm|cent)/.test(u)) medida=v;
-    else medida=v*100;
+    const v=Number(med[1].replace(',','.')),u=med[2];
+    medida=/^(mm|mil)/i.test(u)?v/10:/^(cm|cent)/i.test(u)?v:v*100;
   }
 
-  let calibre=null;
-  const cal=t.match(/\b(?:calibre|cal\.?)\s*(\d+(?:[.,]\d+)?)\b/i);
-  if(cal) calibre=Number(cal[1].replace(',','.'));
+  const calibre=mNumber(t,/\b(?:calibre|cal\.?)\s*(\d+(?:[.,]\d+)?)\b/i) ?? 8;
+  let color='Blanco';
+  const colorM=t.match(/\b(?:color|en)\s+(blanco|negro|rojo|azul|verde|amarillo|naranja|morado|violeta|rosa|transparente|cristal)\b/i);
+  if(colorM) color=colorM[1][0].toUpperCase()+colorM[1].slice(1);
+  if(/\bcombinad[oa]|combinacion|varios colores|multicolor\b/i.test(t)) color='Combinación';
 
-  let tintas=null;
-  const ti=t.match(/\b(\d+)\s*tintas?\b/i);
-  if(ti) tintas=Number(ti[1]);
+  let modo_gajos='Automático recomendado',gajos_manuales=null;
+  const gm=mNumber(t,/\b(?:usar|con|hacer(?:lo)?\s+de|manual(?:mente)?\s+)?(\d+)\s+gajos?\s+(?:totales|de construccion|para fabricar|manuales)\b/i);
+  if(gm){modo_gajos='Manual';gajos_manuales=gm;}
 
-  let gajos=null;
-  const ga=t.match(/\b(\d+)\s*gajos?\b/i) || t.match(/\blogo(?:s)?\s+(?:en|sobre)\s+(\d+)\s*gajos?\b/i);
-  if(ga) gajos=Number(ga[1]);
+  let valvula='Auto';
+  const vm=t.match(/\bvalvula\s+(chica|mediana|grande|jumbo)\b/i);
+  if(vm) valvula=vm[1][0].toUpperCase()+vm[1].slice(1);
+  if(/\bsin valvula\b/i.test(t)) {valvula='Auto';alertas.push('El cotizador ESF-001 requiere válvula; se dejó en Auto.');}
 
+  let bolsa='Auto';
+  const bm=t.match(/\bbolsa\s+(?:de\s+)?(\d+\s*x\s*\d+|sin bolsa|especial)\b/i);
+  if(bm) bolsa=/sin bolsa/i.test(bm[1])?'Sin bolsa':/especial/i.test(bm[1])?'Especial':bm[1].replace(/\s*x\s*/,' x ');
+  if(/\bsin bolsa\b/i.test(t)) bolsa='Sin bolsa';
+
+  const accesorios_extra=mNumber(t,/\baccesorios?\s+extra(?:s)?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i) || 0;
+  const desarrollo_especial=mNumber(t,/\bdesarrollo(?:\s+especial)?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i) || 0;
+  const aplicar_iva=yesNoFrom(t,/\b(?:con|mas|aplicar)\s+iva\b|\biva\s+si\b/i,/\bsin iva\b|\biva\s+no\b/i,'SI');
+
+  // Impresión
   let impresion='';
-  if(/\bsin\s+(?:impresi[oó]n|imprimir|logo)\b/.test(t)) impresion='Sin impresión';
-  else if(/\buv\b/.test(t)) impresion='Digital UV';
-  else if(/\bdigital\b/.test(t)) impresion='Digital';
-  else if(/\bserigraf[ií]a\b/.test(t) || tintas) impresion='Serigrafía';
+  if(/\bsin\s+(?:impresion|imprimir|logo)\b/.test(t)) impresion='Sin impresión';
+  else if(/\b(?:digital\s+uv|uv)\b/.test(t)) impresion='Digital UV';
+  else if(/\b(?:impresion\s+digital|digital)\b/.test(t)) impresion='Digital';
+  else if(/\bserigrafia\b/.test(t)||/\b\d+\s+tintas?\b/.test(t)||/\bcon impresion\b/.test(t)) impresion='Serigrafía';
 
-  if(impresion==='Sin impresión'){ tintas=null; gajos=null; }
+  let tintas=mNumber(t,/\b(\d+)\s+tintas?\b/i);
+  let vistas=mNumber(t,/\b(\d+)\s+vistas?\b/i);
+  let gajos_por_vista=mNumber(t,/\b(\d+)\s+gajos?\s+(?:por|cada)\s+vista\b/i);
+  let gajos_impresos=mNumber(t,/\b(\d+)\s+gajos?\s+impresos?\b/i);
+  // Frases naturales: "impresión digital en 2 gajos" o "logo en 2 gajos".
+  if(gajos_impresos==null){
+    const eg=mNumber(t,/\b(?:impresion|digital|logo)\b[^.;,]{0,35}?\ben\s+(\d+)\s+gajos?\b/i);
+    if(eg!=null) gajos_impresos=eg;
+  }
+  // En serigrafía, "2 gajos mismo logo" sin mencionar vistas se toma como 1 vista que ocupa 2 gajos.
+  if(gajos_por_vista==null && impresion==='Serigrafía'){
+    const sg=mNumber(t,/\b(\d+)\s+gajos?\b(?=[^.;,]{0,35}\b(?:mismo\s+logo|mismo\s+diseno|logo)\b)/i);
+    if(sg!=null) gajos_por_vista=sg;
+  }
+  if(gajos_por_vista==null && vistas!=null && /(?:logo|impresion).*(?:vista)|vista.*(?:logo|impresion)/i.test(t)) gajos_por_vista=1;
+  if(vistas==null && /\b(?:a|de|con)\s+1\s+vista\b/i.test(t)) vistas=1;
+  if(gajos_impresos==null && gajos_por_vista!=null && vistas!=null) gajos_impresos=gajos_por_vista*vistas;
+  if(gajos_impresos!=null && gajos_por_vista==null && vistas==null){gajos_por_vista=gajos_impresos;vistas=1;}
+  if(impresion==='Serigrafía'){
+    if(tintas==null) tintas=1;
+    if(vistas==null) vistas=1;
+    if(gajos_por_vista==null) gajos_por_vista=1;
+    gajos_impresos=gajos_por_vista*vistas;
+  }
+  if(impresion==='Sin impresión'){tintas=null;vistas=null;gajos_por_vista=null;gajos_impresos=null;}
 
-  let arte='';
-  if(/\bmismo\s+logo\b|\bmismo\s+diseño\b/.test(t)) arte='Mismo logo';
-  else if(/\blogos?\s+diferentes\b|\bdiseños?\s+diferentes\b/.test(t)) arte='Logos diferentes';
+  let disenos_diferentes=mNumber(t,/\b(\d+)\s+dise[nñ]os?\s+diferentes?\b/i);
+  let tipo_diseno='Mismo diseño repetido';
+  if(/\bdise[nñ]os?\s+diferentes?|diferente dise[nñ]o|logos?\s+diferentes?\b/i.test(t)){
+    tipo_diseno='Diseños diferentes';
+  }
+  if(tipo_diseno==='Diseños diferentes' && disenos_diferentes==null) disenos_diferentes=vistas||1;
+  if(disenos_diferentes==null) disenos_diferentes=1;
 
-  let material=calibre ? 'PVC calibre '+calibre : ((producto==='Pelota'||producto==='Esfera') ? 'PVC calibre 8 (predeterminado)' : '');
+  const area_digital_manual=mNumber(t,/\b(?:area|superficie)\s+(?:digital\s+)?(?:manual\s+)?(?:de\s+)?(\d+(?:[.,]\d+)?)\s*m2\b/i)||0;
+  let taxi_digital=yesNoFrom(t,/\b(?:con|incluir)\s+taxi\b|\btaxi digital\b/i,/\bsin taxi\b/i,'SI');
+  const costo_taxi=mNumber(t,/\btaxi(?:\s+digital)?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i) ?? 500;
+  const arte=raw.match(/\b(?:arte|logo|dise[nñ]o)\s*[:\-]?\s*([^,;.]+)/i)?.[1]?.trim()||'';
 
+  // Elevación / tubo / servicio
+  const elevar=yesNoFrom(t,/\b(?:para elevar|elevar|con helio|flotar|volar)\b/i,/\b(?:no elevar|sin helio|sin elevar)\b/i,'NO');
+  let tubo_interno=yesNoFrom(t,/\btubo interno|tubo polo a polo\b/i,/\bsin tubo\b/i,'NO');
+  let diam_tubo_m=null;
+  const dt=t.match(/\b(?:diametro\s+del?\s+)?tubo(?:\s+interno)?(?:\s+de)?\s*(\d+(?:[.,]\d+)?)\s*(mm|cm|centimetros?|m|metros?)\b/i);
+  if(dt){let v=Number(dt[1].replace(',','.'));diam_tubo_m=/mm/.test(dt[2])?v/1000:/cm|cent/.test(dt[2])?v/100:v;tubo_interno='SI';}
+  if(tubo_interno==='SI' && diam_tubo_m==null) diam_tubo_m=0.1;
+  const altitud_m=mNumber(t,/\b(?:altitud|altura)\s*(?:de|a)?\s*(\d+(?:[.,]\d+)?)\s*(?:m\s*s\.?\s*n\.?\s*m\.?|msnm|metros sobre el nivel del mar)\b/i) ?? 2240;
+
+  let incluir_servicio=yesNoFrom(t,/\b(?:incluir|con)\s+(?:servicio|instalacion)|servicio de instalacion\b/i,/\bsin servicio|sin instalacion\b/i,'NO');
+  const distancia_km=mNumber(t,/\b(?:distancia|a)\s*(?:de\s*)?(\d+(?:[.,]\d+)?)\s*km\b/i)||0;
+  const casetas=mNumber(t,/\bcasetas?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i)||0;
+  const personas=mNumber(t,/\b(\d+)\s+personas?\b/i) ?? 2;
+  const horas_totales=mNumber(t,/\b(\d+(?:[.,]\d+)?)\s+horas?\s+totales\b/i) ?? 6;
+  const viaticos_adicionales=mNumber(t,/\bviaticos?(?:\s+adicionales?)?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i)||0;
+  const hotel_otros=mNumber(t,/\b(?:hotel|otros gastos)\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i)||0;
+  let modalidad_servicio='Por hora';
+  if(/\bvarios dias\b/i.test(t)) modalidad_servicio='Varios días';
+  else if(/\bpor dia\b/i.test(t)) modalidad_servicio='Por día';
+  const dias=mNumber(t,/\b(\d+)\s+dias?\b/i) ?? 1;
+  const horas_dia=mNumber(t,/\b(\d+(?:[.,]\d+)?)\s+horas?\s+(?:por|al)\s+dia\b/i) ?? 8;
+  const noches=mNumber(t,/\b(\d+)\s+noches?\b/i) ?? 0;
+  let piola='6 mm'; const pm=t.match(/\bpiola\s+(?:de\s+)?(\d+(?:[.,]\d+)?)\s*mm\b/i); if(pm) piola=pm[1]+' mm';
+  const peso_extra=mNumber(t,/\bpeso(?:\s+adicional|\s+extra)?(?:\s+de\s+accesorios?)?\s*(\d+(?:[.,]\d+)?)\s*kg\b/i)||0;
+
+  // Cantidades: extrae únicamente de contextos de cantidad; nunca usa medidas/tintas/vistas/gajos.
   let cantidades=[];
-  const addNums=s=>{
-    const nums=(String(s||'').match(/\d{1,6}/g)||[]).map(Number).filter(n=>n>0);
-    nums.forEach(n=>{if(!cantidades.includes(n)) cantidades.push(n);});
-  };
-  const prodWords='(?:pelotas?|esferas?|boyas?|arcos?|t[uú]neles?|salvavidas?|donas?|portavasos?|botellas?)';
-
-  // Si el usuario dice "cotizar ..." esa lista tiene prioridad.
-  let c=t.match(/\b(?:cotizar|cotiza|cotizame|cotízame)\s*(?:en|para)?\s*([\d\s,;y]+?)(?=\s*(?:piezas?|pzas?\.?|unidades?|pelotas?|esferas?|boyas?|arcos?|t[uú]neles?|salvavidas?|donas?|portavasos?|botellas?|$))/i);
-  if(c) addNums(c[1]);
-
+  const addNums=s=>(String(s||'').match(/\d{1,6}/g)||[]).map(Number).forEach(n=>{if(n>0&&!cantidades.includes(n))cantidades.push(n)});
+  const ctx=[
+    /\bcotizar(?:\s+(?:en|por|para))?\s+([0-9,\sy]+?)\s*(?:piezas?|pzas?|unidades?)\b/i,
+    /\bcantidades?\s*(?:de|:)?\s*([0-9,\sy]+?)(?=$|[.;])/i,
+    /\b(\d{1,6})\s*(?:piezas?|pzas?|unidades?)\b/i
+  ];
+  for(const rx of ctx){const m=t.match(rx);if(m){addNums(m[1]);break;}}
   if(!cantidades.length){
-    c=t.match(/\b(?:cantidades?|cantidad)\s*(?:de|:)?\s*([\d\s,;y]+)/i);
-    if(c) addNums(c[1]);
-  }
-
-  if(!cantidades.length){
-    c=t.match(/\ben\s+([\d\s,;y]+)\s*(?:piezas?|pzas?\.?|unidades?)\b/i);
-    if(c) addNums(c[1]);
-  }
-
-  // "10 pelotas de 2 m..."
-  if(!cantidades.length){
+    const prodWords='(?:pelotas?|esferas?)';
     const q=t.match(new RegExp('(?:^|\\b)(\\d{1,6})\\s+'+prodWords+'\\b','i'));
-    if(q) cantidades=[Number(q[1])];
+    if(q)cantidades=[Number(q[1])];
   }
 
-  // "10 piezas de pelota..."
-  if(!cantidades.length){
-    const q=t.match(/\b(\d{1,6})\s*(?:piezas?|pzas?\.?|unidades?)\b/i);
-    if(q) cantidades=[Number(q[1])];
-  }
+  if(producto==='Otro') alertas.push('No se reconoció la familia del producto.');
+  if((producto==='Pelota'||producto==='Esfera') && medida==null) alertas.push('Falta diámetro/medida con unidad (cm o m).');
+  if(!cantidades.length) alertas.push('Falta cantidad o cantidades.');
+  if(impresion==='' && /\bimpres/i.test(t)) alertas.push('Se mencionó impresión pero no se pudo definir el tipo.');
+  if(/Digital UV/i.test(impresion)) alertas.push('UV no está parametrizado en el ESF-001 actual; revisar tarifa antes de autorizar.');
 
-  cantidades=cantidades.filter(n=>Number.isFinite(n)&&n>0).slice(0,12);
-
+  const material='PVC calibre '+calibre+(calibre===8?' (predeterminado)':'');
   return {
-    familia,producto,medida_cm:medida,material,impresion,tintas,
-    gajos_impresos:gajos,arte,cantidades,calibre,
-    observaciones:'',
-    confianza:0.99,fuente:'Intérprete local v4.4'
+    familia,producto,medida_cm:medida,calibre,color,cantidades,modo_gajos,gajos_manuales,valvula,bolsa,
+    accesorios_extra,desarrollo_especial,aplicar_iva,material,
+    impresion,gajos_por_vista,vistas,gajos_impresos,tintas,disenos_diferentes,tipo_diseno,
+    area_digital_manual,taxi_digital,costo_taxi,arte,
+    elevar,tubo_interno,diam_tubo_m,altitud_m,incluir_servicio,distancia_km,casetas,personas,
+    horas_totales,viaticos_adicionales,hotel_otros,modalidad_servicio,dias,horas_dia,noches,piola,peso_extra,
+    observacion_servicio:'',alertas,confianza:0.99,fuente:'Intérprete ESF-001 v5.0'
   };
 }
-
 function hasAppsScriptBridge(){
   return !!(window.google && google.script && google.script.run);
 }
@@ -340,104 +523,101 @@ function scheduleInterpret(delay=700){
 $('request').addEventListener('input',()=>scheduleInterpret(500));
 
 const UTILIDAD_PELOTAS=[[1,1.4],[2,1.3],[3,1.2875],[4,1.275],[5,1.2625],[6,1.25],[7,1.2375],[8,1.225],[9,1.2125],[10,1.2],[11,1.1967],[12,1.1934],[13,1.1901],[14,1.1868],[15,1.18],[16,1.176],[17,1.172],[18,1.168],[19,1.164],[20,1.16],[25,1.15],[30,1.14],[35,1.13],[40,1.12],[45,1.11],[50,1.1],[60,1.08],[70,1.06],[75,1.05],[80,1.04],[90,1.02],[100,1.0],[110,0.99333334],[120,0.98666668],[130,0.98000002],[140,0.97333336],[150,0.9666667],[175,0.9333334],[200,0.9333334],[250,0.9000001],[300,0.8833333],[350,0.8666665],[400,0.8333335],[450,0.8066667],[500,0.8],[550,0.79],[600,0.78],[650,0.77],[700,0.76],[750,0.75],[800,0.74],[900,0.72],[950,0.71],[1000,0.7],[1500,0.686],[2000,0.672],[2500,0.665],[3000,0.658],[3500,0.644],[4000,0.63],[4500,0.616],[5000,0.6],[6000,0.525],[7000,0.51],[7500,0.495],[8000,0.48],[9000,0.465],[10000,0.45],[15000,0.42],[20000,0.3937],[25000,0.374586],[30000,0.36],[40000,0.33],[50000,0.3],[60000,0.2899],[100000,0.295],[250000,0.2895],[500000,0.29]];
-const UTILIDAD_GRANDES=[[1,1.3],[2,1.2],[3,1.1875],[4,1.15],[5,1.13],[6,1.1],[7,1.08],[8,1.05],[9,1.03],[10,1.0],[11,0.996],[12,0.992],[13,0.988],[14,0.9840000000000001],[15,0.98],[16,0.97],[17,0.965],[18,0.96],[19,0.955],[20,0.95],[21,0.95],[22,0.95],[23,0.95],[24,0.95],[25,0.925],[30,0.9],[35,0.875],[40,0.85],[45,0.825],[46,0.82],[47,0.815],[48,0.81],[49,0.805],[50,0.8],[55,0.775],[60,0.75],[65,0.725],[70,0.7],[75,0.675],[76,0.67],[77,0.665],[78,0.66],[79,0.655],[80,0.65],[85,0.645],[90,0.64],[95,0.635],[100,0.63],[110,0.629],[120,0.628],[130,0.627],[140,0.626],[150,0.625],[155,0.6245],[160,0.624],[165,0.6235],[170,0.623],[180,0.6225],[190,0.622],[200,0.608],[300,0.594],[400,0.58],[450,0.573],[500,0.5660000000000001],[650,0.5660000000000001],[700,0.5379999999999999],[800,0.524],[900,0.51],[950,0.5],[1000,0.49],[1500,0.47600000000000003],[1750,0.469],[2000,0.462],[2500,0.455],[2600,0.455],[2700,0.455],[2800,0.455],[2900,0.455],[3000,0.44799999999999995],[3250,0.441],[3500,0.434],[4000,0.42],[4500,0.406],[5000,0.39],[5500,0.3525],[6000,0.315],[6500,0.3075],[7000,0.3],[7500,0.285],[8000,0.27],[8500,0.2625],[9000,0.255],[9500,0.2475],[10000,0.24],[12500,0.225],[15000,0.21],[15500,0.207],[16000,0.204],[16500,0.201],[17000,0.198],[17500,0.195],[20000,0.18],[25000,0.165],[30000,0.15],[30500,0.135],[40000,0.12],[50000,0.09],[100000,0.085],[150000,0.085],[500000,0.08]];
-function lookupStep(curve,q){
-  let v=curve[0][1];
-  for(const row of curve){ if(q>=row[0]) v=row[1]; else break; }
-  return v;
+const UTILIDAD_GRANDES=[[1,1.3],[2,1.2],[3,1.1875],[4,1.15],[5,1.13],[6,1.1],[7,1.08],[8,1.05],[9,1.03],[10,1.0],[11,.996],[12,.992],[13,.988],[14,.984],[15,.98],[16,.97],[17,.965],[18,.96],[19,.955],[20,.95],[21,.95],[22,.95],[23,.95],[24,.95],[25,.925],[30,.9],[35,.875],[40,.85],[45,.825],[50,.8],[55,.775],[60,.75],[65,.725],[70,.7],[75,.675],[80,.65],[85,.645],[90,.64],[95,.635],[100,.63],[110,.629],[120,.628],[130,.627],[140,.626],[150,.625],[170,.623],[200,.608],[300,.594],[400,.58],[500,.566],[650,.566],[700,.538],[800,.524],[900,.51],[1000,.49],[1500,.476],[2000,.462],[2500,.455],[3000,.448],[3500,.434],[4000,.42],[4500,.406],[5000,.39],[6000,.315],[7000,.3],[8000,.27],[9000,.255],[10000,.24],[15000,.21],[20000,.18],[25000,.165],[30000,.15],[40000,.12],[50000,.09],[100000,.085],[150000,.085],[500000,.08]];
+const REND={4:7.28,5:5.824,6:4.8533333333,7:4.16,8:3.64,9:3.2355555556,10:2.912,11:2.6472727273,12:2.4266666667,14:2.08,20:1.456,25:1.1648,30:.9706666667,35:.832};
+const BAG_COST={'15 x 25':.174,'20 x 30':.2982857143,'25 x 35':.406,'35 x 45':.7534020619,'40 x 60':1.218,'50 x 70':1.6995348837,'60 x 90':3.654,'90 x 120':9.135};
+const VAL_COST={Chica:1.8,Mediana:3,Grande:5,Jumbo:20};
+function lookupStep(curve,q){let v=curve[0][1];for(const r of curve){if(q>=r[0])v=r[1];else break;}return v;}
+function rendimientoPVC(cal){return REND[cal]||REND[8];}
+function gajosAuto(d){return Math.max(6,Math.ceil(Math.PI*d/(1.4-.02)));}
+function valvulaAuto(d){return d<=.5?'Chica':d<=.8?'Mediana':d<=1.2?'Grande':'Jumbo';}
+function bolsaAuto(d){return d<=.35?'15 x 25':d<=.5?'20 x 30':d<=.8?'25 x 35':d<=1.2?'35 x 45':d<=1.5?'40 x 60':d<=2?'50 x 70':d<=2.5?'60 x 90':'90 x 120';}
+function tubeCost(data,diam,cal){
+  if(data.tubo_interno!=='SI') return {total:0,kg:0,cycles:0};
+  const td=data.diam_tubo_m||.1, ancho=Math.PI*td+.02, largo=diam, area=ancho*largo;
+  const kg=area/rendimientoPVC(cal), pvc=kg*93.3, cycles=Math.ceil(largo/.45)+2, mod=cycles*.82;
+  return {total:pvc+mod,kg,cycles};
 }
-function getCalibreFromMaterial(s){
-  const m=String(s||'').match(/(?:calibre|cal\.?)\s*(\d+(?:[.,]\d+)?)/i);
-  return m?Number(m[1]):8;
+function printCost(data,diam,g,qty){
+  const tipo=data.impresion||'';
+  if(!tipo||tipo==='Sin impresión') return {cost:0,desc:'Sin impresión'};
+  const largo=Math.PI*diam/2, anchoGeom=Math.PI*diam/g;
+  if(tipo==='Serigrafía'){
+    const gv=Math.max(1,data.gajos_por_vista||1), vistas=Math.max(1,data.vistas||1), total=gv*vistas;
+    const tintas=Math.max(1,data.tintas||1), dis=Math.max(1,data.disenos_diferentes||1);
+    const areaPos=(largo*.75*anchoGeom);
+    const fijo=(200*tintas*dis + 1843.088418430884*areaPos*tintas*dis + 0)/qty;
+    const tinta=((areaPos*total)*tintas/28)*350;
+    const mod=total*(.25*6 + Math.max(tintas-1,0)*.25*1)*.82;
+    return {cost:fijo+tinta+mod,desc:'Serigrafía'};
+  }
+  const gd=Math.max(1,data.gajos_impresos||data.gajos_por_vista||g);
+  const areaGajo=(Math.PI*diam/g+.02)*(Math.PI*diam/2);
+  const area=(data.area_digital_manual||0)>0?data.area_digital_manual:areaGajo*gd;
+  let rate=140;
+  if(/UV/i.test(tipo)) rate=200; // campo aceptado, pero fuera del ESF-001 actual
+  const taxi=(data.taxi_digital==='NO'?0:(data.costo_taxi||500)/qty);
+  return {cost:area*rate+taxi,desc:tipo};
 }
-function rendimientoPVC(cal){
-  const map={4:7.28,5:5.824,6:4.8533333333,7:4.16,8:3.64,9:3.2355555556,10:2.912,11:2.6472727273,12:2.4266666667,14:2.08,20:1.456,25:1.1648,30:0.9706666667,35:0.832};
-  return map[cal]||3.64;
+function heliumService(data,diam,qty,kgBody,kgTube){
+  if(data.elevar!=='SI') return {perPiece:0,heliumCost:0,tanks:0,netLift:0,status:'No aplica'};
+  const alt=data.altitud_m??2240, T=288.15-.0065*alt, P=101325*Math.pow(T/288.15,5.25588);
+  const air=P/(287.058*T), he=P/(2077.1*T), vol=Math.PI/6*Math.pow(diam,3);
+  const gross=(air-he)*vol, weight=kgBody+kgTube+.5+(data.peso_extra||0), net=gross-weight;
+  const reqPiece=vol*(P/101325)*(288.15/T)*1.05, total=reqPiece*qty, tanks=total?Math.ceil(total/6):0, helium=tanks*6900;
+  let logistics=0;
+  if(data.incluir_servicio==='SI'){
+    const km=(data.distancia_km||0)*2, gas=(km/8)*25, mant=gas*.15, cas=data.casetas||0, unexpected=(gas+cas)*.05;
+    logistics=gas+mant+cas+unexpected+(data.viaticos_adicionales||0)+(data.hotel_otros||0);
+  }
+  const svc=(helium+logistics)/qty;
+  const status=diam<3?'REVISAR: elevación comercial < 3 m':net<=0?'NO SE ELEVA':net<4?'ELEVA SIN RESERVA':'APTO';
+  return {perPiece:svc,heliumCost:helium,tanks,netLift:net,status};
 }
-function bolsaAuto(d){
-  if(d<=0.35) return {n:'15 x 25',c:0.174};
-  if(d<=0.50) return {n:'20 x 30',c:0.2982857143};
-  if(d<=0.80) return {n:'25 x 35',c:0.406};
-  if(d<=1.20) return {n:'35 x 45',c:0.7534020619};
-  if(d<=1.50) return {n:'40 x 60',c:1.218};
-  if(d<=2.00) return {n:'50 x 70',c:1.6995348837};
-  if(d<=2.50) return {n:'60 x 90',c:3.654};
-  return {n:'90 x 120',c:9.135};
-}
-function valvulaAuto(d){
-  if(d<=0.50) return {n:'Chica',c:1.8};
-  if(d<=0.80) return {n:'Mediana',c:3};
-  if(d<=1.20) return {n:'Grande',c:5};
-  return {n:'Jumbo',c:20};
-}
-function gajosAuto(d){
-  let g=Math.max(6,Math.ceil(Math.PI*d/(1.4-0.02)));
-  if(d>=3) g=Math.max(8,g);
-  if(g%2!==0) g++;
-  return g;
-}
-function costoSerigrafia(d,gajos,qty,tintas,gajosImp,disenos=1){
-  tintas=Math.max(1,tintas||1); gajosImp=Math.max(1,gajosImp||1);
-  const largo=Math.PI*d/2, anchoGeom=Math.PI*d/gajos;
-  const areaPos=(largo*0.75)*anchoGeom;
-  const fijo=200*tintas*disenos + 1843.088418430884*areaPos*tintas*disenos;
-  const tinta=(areaPos*gajosImp*tintas/28)*350;
-  const mod=gajosImp*(0.25*6)*0.84;
-  return fijo/qty+tinta+mod;
-}
-function costoDigital(d,gajos,gajosImp,tipo){
-  const largo=Math.PI*d/2, anchoTotal=Math.PI*d/gajos+0.02;
-  const areaGajo=largo*anchoTotal;
-  const rate=/uv/i.test(tipo||'')?200:150;
-  return areaGajo*Math.max(1,gajosImp||gajos)*rate;
-}
-function cotizarPelotaEsfera(d,q,data){
-  const diam=d/100;
-  const cal=getCalibreFromMaterial(data.material);
-  const g=gajosAuto(diam);
-  const anchoGeom=Math.PI*diam/g;
-  const anchoTotal=anchoGeom+0.02;
-  const largo=Math.PI*diam/2;
-  const areaRect=anchoTotal*largo*g;
-  const kg=areaRect/rendimientoPVC(cal);
-  const pvc=kg*93.3;
-  const val=valvulaAuto(diam);
-  const bolsa=bolsaAuto(diam);
-  const mpd=pvc+val.c+bolsa.c;
+function cotizarPelotaEsfera(cm,qty,data){
+  const diam=cm/100, cal=data.calibre||8;
+  const auto=gajosAuto(diam), g=/manual/i.test(data.modo_gajos||'')&&data.gajos_manuales?data.gajos_manuales:auto;
+  const anchoGeom=Math.PI*diam/g, anchoTotal=anchoGeom+.02, largo=Math.PI*diam/2;
+  const areaGajo=anchoTotal*largo, area=areaGajo*g, rend=rendimientoPVC(cal), kgBody=area/rend, pvc=kgBody*93.3;
+  const valve=(data.valvula&&data.valvula!=='Auto')?data.valvula:valvulaAuto(diam), valveCost=VAL_COST[valve]||VAL_COST[valvulaAuto(diam)];
+  const bag=(data.bolsa&&data.bolsa!=='Auto')?data.bolsa:bolsaAuto(diam), bagCost=(bag==='Sin bolsa'||bag==='Especial')?0:(BAG_COST[bag]||0);
+  const tube=tubeCost(data,diam,cal);
+  const accesorios=(data.accesorios_extra||0)+tube.total; // extra elevar maestro = 0
+  const mpd=pvc+valveCost+bagCost+accesorios;
 
   const metrosSell=largo*g;
-  const golpes=diam<=0.46?6:Math.ceil(metrosSell/0.45);
-  const minSell=golpes*(1/6)*2;
-  const minFijo=diam<=1.30?1:(diam<2.8?3.5:10);
-  const minInflEmp=diam*8.459;
-  const mod=(minSell+minFijo+minInflEmp)*0.84;
-
-  const primo=mpd+mod;
-  const prod=primo+primo*0.05+primo*0.12;
-  const util=lookupStep(diam<=1.3?UTILIDAD_PELOTAS:UTILIDAD_GRANDES,q);
-  const desarrollo=40/q;
-  const base=prod+prod*util+desarrollo;
-
-  let imp=0;
-  const tipo=data.impresion||'';
-  if(tipo==='Serigrafía') imp=costoSerigrafia(diam,g,q,data.tintas,data.gajos_impresos,1);
-  else if(/Digital/i.test(tipo)) imp=costoDigital(diam,g,data.gajos_impresos,tipo);
-
-  const unit=base+imp;
+  const selladas=diam<=.46?6:Math.ceil(metrosSell/.45);
+  const fijo=diam<=1.3?1:diam<2.8?3.5:10;
+  const mod=((selladas*(1/6)*2)+fijo+diam*8.459)*.82;
+  const primo=mod+mpd, merma=primo*.05, indirectos=primo*.12, prod=primo+merma+indirectos;
+  const desarrollo=(40+(data.desarrollo_especial||0))/qty;
+  const util=lookupStep(diam<=1.3?UTILIDAD_PELOTAS:UTILIDAD_GRANDES,qty);
+  const sinImp=prod+desarrollo+prod*util;
+  const pr=printCost(data,diam,g,qty);
+  const hs=heliumService(data,diam,qty,kgBody,tube.kg);
+  const unit=sinImp+pr.cost+hs.perPiece;
+  const subtotal=unit*qty, iva=(String(data.aplicar_iva||'SI').toUpperCase()==='SI')?subtotal*.16:0;
+  const alerts=[];
+  if(anchoTotal>1.4) alerts.push('Gajo no cabe en rollo de 1.40 m');
+  if(/UV/i.test(data.impresion||'')) alerts.push('UV usa tarifa provisional externa al ESF-001');
+  if(data.elevar==='SI'&&diam<3) alerts.push('No cotizar elevación comercial por debajo de 3 m');
   return {
-    cantidad:q, unitario:unit, importe:unit*q, estado:'Calculado',
-    detalle:{diam,cal,g,areaRect,kg,pvc,mod,prod,util,desarrollo,imp,valvula:val.n,bolsa:bolsa.n}
+    cantidad:qty,unitario:unit,importe:subtotal+iva,estado:alerts.length?'Revisar: '+alerts.join('; '):'Calculado',
+    detalle:{diam,cal,g,auto,area,kgBody,pvc,mod,mpd,primo,merma,indirectos,prod,util,desarrollo,
+      impresion:pr.cost,servicio:hs.perPiece,valvula:valve,bolsa:bag,tanks:hs.tanks,netLift:hs.netLift,iva}
   };
 }
 function calculateLocalQuote(d){
   const missing=[];
   if(!d.producto) missing.push('producto');
-  if(!(d.medida_cm>0)) missing.push('medida');
-  if(!d.cantidades.length) missing.push('cantidades');
-  if(missing.length) return {ok:false,message:'Faltan datos: '+missing.join(', '),rows:[]};
-  if(!/^(Pelota|Esfera)$/i.test(d.producto)) return {ok:false,message:'El motor conectado por ahora es Pelotas / Esferas.',rows:[]};
+  if(!(d.medida_cm>0)) missing.push('diámetro/medida');
+  if(!d.cantidades.length) missing.push('cantidad');
+  if(missing.length)return {ok:false,message:'Faltan datos: '+missing.join(', '),rows:[]};
+  if(!/^(Pelota|Esfera)$/i.test(d.producto))return {ok:false,message:'El motor conectado en esta versión es Pelotas / Esferas (ESF-001).',rows:[]};
+  if(d.impresion==='Serigrafía'&&(!(d.tintas>0)||!(d.vistas>0)||!(d.gajos_por_vista>0)))
+    return {ok:false,message:'Para serigrafía revisa tintas, número de vistas y gajos por vista.',rows:[]};
   const rows=d.cantidades.map(q=>cotizarPelotaEsfera(d.medida_cm,q,d));
-  return {ok:true,message:'Motor Pelotas / Esferas conectado. Revisa medida, calibre e impresión antes de autorizar.',rows};
+  return {ok:true,message:'ESF-001 calculado con las variables del cotizador maestro: producto, gajos, PVC, válvula, bolsa, impresión, desarrollo, utilidad, IVA y opciones de elevación/servicio.',rows};
 }
 function money(n){return new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2}).format(n);}
 
@@ -458,7 +638,7 @@ $('quoteBtn').addEventListener('click',()=>{
 });
 
 $('clearBtn').addEventListener('click',()=>{
-  $('request').value=''; ['producto','familia','medida','material','impresion','tintas','gajos','arte','cantidades'].forEach(id=>$(id).value='');
+  $('request').value=''; ['producto','familia','medida','calibre','color','cantidades','modoGajos','gajosManuales','valvula','bolsa','accesoriosExtra','desarrolloEspecial','iva','material','impresion','gajosVista','vistas','gajos','tintas','disenos','tipoDiseno','areaDigital','taxiDigital','costoTaxi','arte','elevar','tubo','diamTubo','altitud','servicio','distancia','casetas','personas','horasTotales','viaticos','hotel','modalidad','dias','horasDia','noches','piola','pesoExtra','obsServicio'].forEach(id=>$(id).value='');
   $('quoteBody').innerHTML='<tr><td colspan="4">Interpreta una solicitud para comenzar.</td></tr>';
   $('msg').textContent='';
 });
