@@ -243,7 +243,7 @@ body.authLocked #mainLogin{visibility:visible!important}
     </details>
   </div>
 </div>
-<iframe id="authBridgeFrame" title="Validación de acceso"></iframe>
+<iframe id="authBridgeFrame" name="authBridgeFrame" title="Validación de acceso"></iframe>
 
 <div class="app">
   <aside>
@@ -1031,10 +1031,9 @@ function syncCompactPrintFields(){
   if(el) el.addEventListener('input',syncCompactPrintFields);
 });
 
-/* ===== v5.6.3 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
+/* ===== v5.6.4 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
 const CONTROL_URL_KEY='INFLASTIC_CONTROL_ODP_URL_V1';
 let MAIN_AUTHENTICATED=false;
-let AUTH_BRIDGE_READY=false;
 let RECOVERY_NONCE='';
 let REQ_SEQ=0;
 const ACCESS_PENDING=new Map();
@@ -1052,16 +1051,17 @@ function validControlUrl(url){
   }catch(e){return false}
 }
 function storedControlUrl(){return String(localStorage.getItem(CONTROL_URL_KEY)||'').trim()}
-function authUrl(base){return base+(base.includes('?')?'&':'?')+'auth=1'}
 
 function configureFrames(){
   const saved=storedControlUrl();
   const input=$('mainControlUrl');
   if(input && !input.value)input.value=saved;
   if(!saved || !validControlUrl(saved))return;
-  const control=$('controlFrame'),auth=$('authBridgeFrame');
+  const control=$('controlFrame');
   if(control)control.src=saved;
-  if(auth)auth.src=authUrl(saved);
+
+  // En cuanto hay URL válida, consultar si es primer acceso.
+  setTimeout(()=>refreshAccessStatus(),120);
 }
 function showCotizador(){
   if(!MAIN_AUTHENTICATED)return;
@@ -1105,21 +1105,41 @@ function showMode(mode){
 }
 function accessRequest(action,payload={}){
   return new Promise((resolve,reject)=>{
-    if(!AUTH_BRIDGE_READY)return reject(new Error('El validador todavía no está listo.'));
+    const base=storedControlUrl();
+    if(!base || !validControlUrl(base))
+      return reject(new Error('Configura primero la URL de CONTROL ODP.'));
+
     const requestId='r'+Date.now()+'_'+(++REQ_SEQ);
     const timer=setTimeout(()=>{
       ACCESS_PENDING.delete(requestId);
       reject(new Error('La validación tardó demasiado. Intenta de nuevo.'));
-    },12000);
+    },15000);
+
     ACCESS_PENDING.set(requestId,{resolve,reject,timer});
-    try{
-      $('authBridgeFrame').contentWindow.postMessage(
-        {type:'INFLASTIC_MAIN_ACCESS',action,payload,requestId},
-        '*'
-      );
-    }catch(e){
-      clearTimeout(timer);ACCESS_PENDING.delete(requestId);reject(e);
-    }
+
+    const form=document.createElement('form');
+    form.method='POST';
+    form.action=base;
+    form.target='authBridgeFrame';
+    form.style.display='none';
+
+    const fields={
+      requestId:requestId,
+      action:String(action||''),
+      payload:JSON.stringify(payload||{})
+    };
+
+    Object.entries(fields).forEach(([name,value])=>{
+      const input=document.createElement('input');
+      input.type='hidden';
+      input.name=name;
+      input.value=value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(()=>form.remove(),800);
   });
 }
 async function refreshAccessStatus(){
@@ -1214,16 +1234,12 @@ async function resetPassword(){
 
 window.addEventListener('message',e=>{
   const d=e.data||{};
-  if(d.type==='INFLASTIC_MAIN_BRIDGE_READY'){
-    AUTH_BRIDGE_READY=true;
-    refreshAccessStatus();
-    return;
-  }
-  if(d.type==='INFLASTIC_MAIN_RESPONSE'){
-    const p=ACCESS_PENDING.get(String(d.requestId||''));
+  if(d.type==='INFLASTIC_MAIN_POST_RESPONSE'){
+    const key=String(d.requestId||'');
+    const p=ACCESS_PENDING.get(key);
     if(!p)return;
     clearTimeout(p.timer);
-    ACCESS_PENDING.delete(String(d.requestId||''));
+    ACCESS_PENDING.delete(key);
     p.resolve(d.result||{ok:false,message:'Respuesta inválida.'});
   }
 });
@@ -1249,10 +1265,9 @@ $('mainControlUrl')?.addEventListener('change',()=>{
   const u=String($('mainControlUrl')?.value||'').trim();
   if(!validControlUrl(u))return;
   localStorage.setItem(CONTROL_URL_KEY,u);
-  AUTH_BRIDGE_READY=false;
-  $('authBridgeFrame').src=authUrl(u);
   $('controlFrame').src=u;
   setLoginMessage('Conexión guardada.',false);
+  setTimeout(()=>refreshAccessStatus(),120);
 });
 
 $('navCotizador')?.addEventListener('click',showCotizador);
