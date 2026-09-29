@@ -1031,7 +1031,7 @@ function syncCompactPrintFields(){
   if(el) el.addEventListener('input',syncCompactPrintFields);
 });
 
-/* ===== v5.6.6 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
+/* ===== v5.6.7 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
 const CONTROL_URL_KEY='INFLASTIC_CONTROL_ODP_URL_V1';
 const DEFAULT_CONTROL_URL='https://script.google.com/macros/s/AKfycby_VYHM5DoOWN8AQyKTd-V8I97WOUBcthGtldeIy7Wb6BeTIgognjCAJOqLkIVidsWb8Q/exec';
 let MAIN_AUTHENTICATED=false;
@@ -1151,6 +1151,32 @@ function showMode(mode){
     setTimeout(()=>$('mainPassword')?.focus(),80);
   }
 }
+function loadJsonp(url,callbackName){
+  return new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    let settled=false;
+
+    window[callbackName]=(data)=>{
+      if(settled)return;
+      settled=true;
+      try{delete window[callbackName]}catch(e){window[callbackName]=undefined}
+      script.remove();
+      resolve(data);
+    };
+
+    script.onerror=()=>{
+      if(settled)return;
+      settled=true;
+      try{delete window[callbackName]}catch(e){window[callbackName]=undefined}
+      script.remove();
+      reject(new Error('No se pudo consultar el validador.'));
+    };
+
+    script.src=url;
+    document.head.appendChild(script);
+  });
+}
+
 function accessRequest(action,payload={}){
   return new Promise((resolve,reject)=>{
     const base=storedControlUrl();
@@ -1158,13 +1184,6 @@ function accessRequest(action,payload={}){
       return reject(new Error('Configura primero la URL de CONTROL ODP.'));
 
     const requestId='r'+Date.now()+'_'+(++REQ_SEQ);
-    const timer=setTimeout(()=>{
-      ACCESS_PENDING.delete(requestId);
-      reject(new Error('La validación tardó demasiado. Intenta de nuevo.'));
-    },15000);
-
-    ACCESS_PENDING.set(requestId,{resolve,reject,timer});
-
     const form=document.createElement('form');
     form.method='POST';
     form.action=base;
@@ -1187,9 +1206,40 @@ function accessRequest(action,payload={}){
 
     document.body.appendChild(form);
     form.submit();
-    setTimeout(()=>form.remove(),800);
+    setTimeout(()=>form.remove(),900);
+
+    let tries=0;
+    const maxTries=45;
+
+    const poll=async()=>{
+      tries++;
+      const cb='inflasticPoll_'+Date.now()+'_'+tries+'_'+REQ_SEQ;
+      const sep=base.includes('?')?'&':'?';
+      const url=base+sep+
+        'api=poll&requestId='+encodeURIComponent(requestId)+
+        '&callback='+encodeURIComponent(cb)+
+        '&_='+Date.now();
+
+      try{
+        const data=await loadJsonp(url,cb);
+        if(data && data.ready){
+          resolve(data.result||{ok:false,message:'Respuesta inválida.'});
+          return;
+        }
+      }catch(e){
+      }
+
+      if(tries>=maxTries){
+        reject(new Error('La validación tardó demasiado. Intenta de nuevo.'));
+        return;
+      }
+      setTimeout(poll,400);
+    };
+
+    setTimeout(poll,350);
   });
 }
+
 async function refreshAccessStatus(){
   try{
     const status=await accessRequest('status');
@@ -1279,18 +1329,6 @@ async function resetPassword(){
     btn.disabled=false;btn.textContent='CAMBIAR CONTRASEÑA';
   }
 }
-
-window.addEventListener('message',e=>{
-  const d=e.data||{};
-  if(d.type==='INFLASTIC_MAIN_POST_RESPONSE'){
-    const key=String(d.requestId||'');
-    const p=ACCESS_PENDING.get(key);
-    if(!p)return;
-    clearTimeout(p.timer);
-    ACCESS_PENDING.delete(key);
-    p.resolve(d.result||{ok:false,message:'Respuesta inválida.'});
-  }
-});
 
 $('mainLoginBtn')?.addEventListener('click',mainLogin);
 $('mainPassword')?.addEventListener('keydown',e=>{if(e.key==='Enter')mainLogin()});
