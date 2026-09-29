@@ -396,7 +396,7 @@ body.authLocked #mainLogin{visibility:visible!important}
           <div class="row">
             <button type="button" id="saveControlUrl">Guardar y abrir Control</button>
           </div>
-          <div class="muted">La URL queda guardada únicamente en este navegador. CONTROL ODP conserva su propia clave y sesión.</div>
+          <div class="muted">La URL queda guardada únicamente en este navegador. CONTROL ODP abrirá directamente dentro del Cotizador Principal.</div>
         </div>
         <iframe id="controlFrame" title="CONTROL ODP INFLASTIC" hidden></iframe>
       </section>
@@ -1031,7 +1031,7 @@ function syncCompactPrintFields(){
   if(el) el.addEventListener('input',syncCompactPrintFields);
 });
 
-/* ===== v5.6.4 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
+/* ===== v5.6.5 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
 const CONTROL_URL_KEY='INFLASTIC_CONTROL_ODP_URL_V1';
 let MAIN_AUTHENTICATED=false;
 let RECOVERY_NONCE='';
@@ -1052,16 +1052,44 @@ function validControlUrl(url){
 }
 function storedControlUrl(){return String(localStorage.getItem(CONTROL_URL_KEY)||'').trim()}
 
-function configureFrames(){
+function syncControlConnectionUI(openNow=false){
   const saved=storedControlUrl();
-  const input=$('mainControlUrl');
-  if(input && !input.value)input.value=saved;
-  if(!saved || !validControlUrl(saved))return;
-  const control=$('controlFrame');
-  if(control)control.src=saved;
+  const mainInput=$('mainControlUrl');
+  const setupInput=$('controlUrlInput');
+  const setup=$('controlSetup');
+  const frame=$('controlFrame');
 
-  // En cuanto hay URL válida, consultar si es primer acceso.
-  setTimeout(()=>refreshAccessStatus(),120);
+  if(mainInput && !mainInput.value)mainInput.value=saved;
+  if(setupInput && !setupInput.value)setupInput.value=saved;
+
+  const ok=!!saved && validControlUrl(saved);
+
+  if(setup)setup.style.display=ok?'none':'block';
+
+  if(frame){
+    if(ok){
+      if(frame.src!==saved)frame.src=saved;
+      frame.hidden=false;
+    }else{
+      frame.hidden=true;
+      frame.removeAttribute('src');
+    }
+  }
+
+  if(openNow && ok){
+    $('cotizadorView')?.classList.add('hidden');
+    $('controlView')?.classList.remove('hidden');
+    setActiveNav('control');
+  }
+}
+
+function configureFrames(){
+  syncControlConnectionUI(false);
+
+  // Si ya existe una URL válida, consultar si el acceso principal está configurado.
+  if(validControlUrl(storedControlUrl())){
+    setTimeout(()=>refreshAccessStatus(),120);
+  }
 }
 function showCotizador(){
   if(!MAIN_AUTHENTICATED)return;
@@ -1071,13 +1099,22 @@ function showCotizador(){
 }
 function openControl(){
   if(!MAIN_AUTHENTICATED)return;
+
   const url=storedControlUrl();
-  if(!url || !validControlUrl(url))return;
-  const frame=$('controlFrame');
-  if(frame && frame.src!==url)frame.src=url;
   $('cotizadorView')?.classList.add('hidden');
   $('controlView')?.classList.remove('hidden');
   setActiveNav('control');
+
+  if(!url || !validControlUrl(url)){
+    const setup=$('controlSetup');
+    const frame=$('controlFrame');
+    if(setup)setup.style.display='block';
+    if(frame)frame.hidden=true;
+    setTimeout(()=>$('controlUrlInput')?.focus(),80);
+    return;
+  }
+
+  syncControlConnectionUI(true);
 }
 function setLoginMessage(msg,bad=true){
   const el=$('mainLoginMsg');
@@ -1261,11 +1298,40 @@ $('resendRecoveryBtn')?.addEventListener('click',()=>{
 });
 $('resetPasswordBtn')?.addEventListener('click',resetPassword);
 
+
+$('saveControlUrl')?.addEventListener('click',()=>{
+  const u=String($('controlUrlInput')?.value||'').trim();
+
+  if(!validControlUrl(u)){
+    alert('Pega la URL completa de la Web App de CONTROL ODP. Debe comenzar con https://script.google.com/ y terminar en /exec');
+    $('controlUrlInput')?.focus();
+    return;
+  }
+
+  localStorage.setItem(CONTROL_URL_KEY,u);
+
+  const mainInput=$('mainControlUrl');
+  if(mainInput)mainInput.value=u;
+
+  syncControlConnectionUI(true);
+});
+
+$('controlUrlInput')?.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    e.preventDefault();
+    $('saveControlUrl')?.click();
+  }
+});
+
 $('mainControlUrl')?.addEventListener('change',()=>{
   const u=String($('mainControlUrl')?.value||'').trim();
   if(!validControlUrl(u))return;
   localStorage.setItem(CONTROL_URL_KEY,u);
-  $('controlFrame').src=u;
+
+  const setupInput=$('controlUrlInput');
+  if(setupInput)setupInput.value=u;
+
+  syncControlConnectionUI(false);
   setLoginMessage('Conexión guardada.',false);
   setTimeout(()=>refreshAccessStatus(),120);
 });
