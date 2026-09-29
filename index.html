@@ -391,12 +391,12 @@ body.authLocked #mainLogin{visibility:visible!important}
       <section class="controlShell">
         <div id="controlSetup" class="controlSetup">
           <h2>Conectar CONTROL ODP</h2>
-          <p>Pega una sola vez la URL de tu Web App de CONTROL ODP. Después se abrirá dentro de este mismo Cotizador Principal.</p>
+          <p>CONTROL ODP ya está conectado a este Cotizador Principal.</p>
           <input id="controlUrlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec">
           <div class="row">
             <button type="button" id="saveControlUrl">Guardar y abrir Control</button>
           </div>
-          <div class="muted">La URL queda guardada únicamente en este navegador. CONTROL ODP abrirá directamente dentro del Cotizador Principal.</div>
+          <div class="muted">CONTROL ODP utiliza la conexión configurada para INFLASTIC.</div>
         </div>
         <iframe id="controlFrame" title="CONTROL ODP INFLASTIC" hidden></iframe>
       </section>
@@ -1031,8 +1031,9 @@ function syncCompactPrintFields(){
   if(el) el.addEventListener('input',syncCompactPrintFields);
 });
 
-/* ===== v5.6.5 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
+/* ===== v5.6.6 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
 const CONTROL_URL_KEY='INFLASTIC_CONTROL_ODP_URL_V1';
+const DEFAULT_CONTROL_URL='https://script.google.com/macros/s/AKfycby_VYHM5DoOWN8AQyKTd-V8I97WOUBcthGtldeIy7Wb6BeTIgognjCAJOqLkIVidsWb8Q/exec';
 let MAIN_AUTHENTICATED=false;
 let RECOVERY_NONCE='';
 let REQ_SEQ=0;
@@ -1050,7 +1051,10 @@ function validControlUrl(url){
       (u.hostname==='script.google.com' || u.hostname.endsWith('.googleusercontent.com'));
   }catch(e){return false}
 }
-function storedControlUrl(){return String(localStorage.getItem(CONTROL_URL_KEY)||'').trim()}
+function storedControlUrl(){
+  const saved=String(localStorage.getItem(CONTROL_URL_KEY)||'').trim();
+  return validControlUrl(saved)?saved:DEFAULT_CONTROL_URL;
+}
 
 function syncControlConnectionUI(openNow=false){
   const saved=storedControlUrl();
@@ -1080,6 +1084,13 @@ function syncControlConnectionUI(openNow=false){
     $('cotizadorView')?.classList.add('hidden');
     $('controlView')?.classList.remove('hidden');
     setActiveNav('control');
+  }
+}
+
+function ensureControlUrlSaved(){
+  const saved=String(localStorage.getItem(CONTROL_URL_KEY)||'').trim();
+  if(!validControlUrl(saved)){
+    localStorage.setItem(CONTROL_URL_KEY,DEFAULT_CONTROL_URL);
   }
 }
 
@@ -1339,12 +1350,9 @@ $('mainControlUrl')?.addEventListener('change',()=>{
 $('navCotizador')?.addEventListener('click',showCotizador);
 $('navControl')?.addEventListener('click',openControl);
 
+ensureControlUrlSaved();
 configureFrames();
-setTimeout(()=>{
-  if(!storedControlUrl()){
-    setLoginMessage('Abre Configuración de conexión y pega la URL de CONTROL ODP.');
-  }
-},350);
+setTimeout(()=>{},350);
 
 /* Actualiza el resumen compacto después de cualquier interpretación. */
 const _syncCompactObserver=new MutationObserver(syncCompactPrintFields);
