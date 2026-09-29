@@ -82,927 +82,208 @@ details.interp .inside{padding:0 10px 10px;display:grid;grid-template-columns:1f
 @media(max-width:600px){details.interp .inside{grid-template-columns:1fr}}
 
 
-/* ===== v5.1 · VISTA COMPACTA + CONTROL ODP INTEGRADO ===== */
-:root{--compact-gap:8px}
-.app{grid-template-columns:205px 1fr}
-aside{padding:14px 10px;gap:10px}
-.brand{gap:9px;padding:2px 6px 8px}
-.logo{width:44px;height:44px;border-width:3px}
-.brand b{font-size:19px}.brand small{font-size:11px}
-nav{gap:3px}
-nav button{padding:9px 10px;min-height:38px;font-size:14px;border-radius:10px}
-main{padding:12px 14px}
-.top{margin-bottom:9px;align-items:center}
-h1{font-size:clamp(25px,3vw,36px)}
-.sub{margin-top:2px;font-size:13px}
-.status{gap:6px}
-.pill{padding:7px 9px;border-radius:10px;font-size:13px}
-.gridTop{grid-template-columns:minmax(430px,.92fr) minmax(570px,1.08fr);gap:10px;align-items:start}
-.card{border-radius:14px;padding:11px}
-.card h2{margin:0 0 7px;font-size:18px}
-textarea{min-height:84px;max-height:105px;padding:10px 12px;font-size:16px;border-radius:11px}
-.mic{width:54px;height:54px;font-size:24px;margin:4px auto;box-shadow:0 0 0 7px #7c3aed12}
-@keyframes pulse{50%{box-shadow:0 0 0 12px #ec489922}}
-.voiceStatus{font-size:12px;min-height:17px;margin:0}
-.modeRow,.actionRow{gap:7px;margin-top:7px}
-.btn{padding:8px 11px;min-height:38px;border-radius:10px;font-size:14px}
-#msg{min-height:18px;margin:6px 0 0;font-size:13px}
-.fields{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.field{border-radius:9px;padding:6px 8px;min-height:50px}
-.field label{font-size:10px;line-height:1.05}
-.field input,.field select{padding:2px 0 0;font-size:14px;line-height:1.15}
-.sectionTitle{padding:5px 7px;margin-top:2px;font-size:11px;border-radius:8px}
-details.interp{border-radius:9px}
-details.interp>summary{padding:7px 9px;font-size:12px}
-details.interp .inside{padding:0 7px 7px;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-#interpretWarnings{padding:6px 8px;font-size:11px;line-height:1.25}
-.summary{margin-top:10px}
-th,td{padding:7px 9px;font-size:13px}
-.notice{margin-top:7px;padding:7px 9px;font-size:12px}
-.categories{grid-template-columns:repeat(10,1fr);gap:6px;margin-top:9px}
-.cat{border-radius:10px;padding:6px;min-height:66px}
-.cat .ico{font-size:24px;margin-bottom:2px}.cat b{font-size:10px;line-height:1.05}
-.flow{display:none}
-.topCompactTools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.view{display:block}.view.hidden{display:none}
-.controlShell{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:calc(100vh - 30px)}
-.controlBar{display:flex;align-items:center;gap:8px;padding:9px 11px;border-bottom:1px solid var(--line);background:#f8fafc}
-.controlBar h2{margin:0;font-size:18px;flex:1}
-.controlBar button{border:0;border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer}
-.controlBack{background:#e8eef7;color:#334155}
-.controlConfig{background:#ede9fe;color:#6d28d9}
-#controlFrame{width:100%;height:calc(100vh - 85px);border:0;background:#fff}
-.controlSetup{max-width:760px;margin:22px auto;padding:22px;background:#fff;border:1px solid var(--line);border-radius:16px}
-.controlSetup h2{margin-top:0}
-.controlSetup input{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px}
-.controlSetup .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.controlSetup button{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#0ea5e9;color:white}
-.controlSetup .muted{font-size:12px;color:#64748b;margin-top:8px}
-@media(max-width:1250px){
-  .gridTop{grid-template-columns:1fr}
-  .fields,details.interp .inside{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .categories{grid-template-columns:repeat(5,1fr)}
-}
-@media(max-width:980px){
-  .app{grid-template-columns:1fr}aside{display:none}
-  .fields,details.interp .inside{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:600px){
-  main{padding:8px}.top{align-items:flex-start}.status{display:none}
-  .fields,details.interp .inside{grid-template-columns:1fr 1fr}
-  .categories{grid-template-columns:repeat(2,1fr)}
-  .mic{width:64px;height:64px}
-  #controlFrame{height:calc(100vh - 70px)}
-}
-
-</style>
-</head>
-<body>
-<div class="app">
-  <aside>
-    <div class="brand"><div class="logo"></div><div><b>INFLASTIC</b><small>Creamos experiencias inflables</small></div></div>
-    <nav>
-      <button>⌂ Inicio</button><button>▦ Tablero Principal</button><button class="active" id="navCotizador">✦ Cotizador Principal</button><button id="navControl">▣ Control ODP</button>
-      <button>▣ Órdenes de Producción</button><button>◇ Inventario</button><button>🛒 Compras y Proveedores</button>
-      <button>♙ Clientes</button><button>🚚 Entregas / Logística</button><button>◎ Calidad</button>
-      <button>▥ Reportes</button><button>🛠 Mantenimiento</button><button>⚙ Catálogos / Configuración</button>
-    </nav>
-    <div class="foot">Administrador<br><b>INFLASTIC 360</b><br><span style="color:#6ee7b7">● Conectado</span></div>
-  </aside>
-
-  <main>
-    <div id="cotizadorView" class="view">
-    <div class="top">
-      <div><h1>Cotizador Principal con IA ✦</h1><div class="sub">Escribe o dicta tu solicitud. La IA la interpreta automáticamente para que solo revises los datos antes de cotizar.</div></div>
-      <div class="status"><div class="pill" id="datePill">📅</div><div class="pill" id="timePill">🕒</div><div class="pill">🟢 Conectado</div></div>
-    </div>
-
-    <div class="gridTop">
-      <section class="card aiCard">
-        <h2>✦ Cotizar con IA <span style="font-size:12px;color:#667085;font-weight:700">v5.1</span></h2>
-        <textarea id="request" maxlength="600" placeholder="Ej.: Pelota 50 cm, 2 tintas, 2 gajos mismo logo, cotizar 5, 10, 15, 50 y 200 piezas"></textarea>
-        <button id="micBtn" class="mic" type="button" aria-label="Dictar solicitud">🎙</button>
-        <div id="voiceStatus" class="voiceStatus">Toca el micrófono para dictar</div>
-        <div class="modeRow">
-          <button class="btn write" type="button" id="writeBtn">✎ Escribir</button>
-          <button class="btn voice" type="button" id="voiceBtn">🎙 Hablar</button>
-          <button class="btn attach" type="button" id="attachBtn">📎 Adjuntar referencia</button>
-          <input class="fileInput" type="file" id="fileInput" accept="image/*,.pdf">
-        </div>
-        <div class="actionRow">
-          <button class="btn quote" type="button" id="quoteBtn">▣ Cotizar</button>
-          <button class="btn clear" type="button" id="clearBtn">🗑 Limpiar</button>
-        </div>
-        <div id="msg" aria-live="polite"></div>
-      </section>
-
-      <section class="card">
-        <h2>🤖 La IA interpretó <span style="font-size:12px;color:#667085;font-weight:700">v5.1 · ESF-001</span></h2>
-        <div class="fields">
-          <div class="sectionTitle">Datos principales</div>
-          <div class="field"><label>Producto</label><input id="producto"></div>
-          <div class="field"><label>Diámetro / medida (cm)</label><input id="medida" inputmode="decimal"></div>
-          <div class="field"><label>Cantidades</label><input id="cantidades" placeholder="Ej. 5, 10, 20"></div>
-          <div class="field"><label>Calibre PVC</label><input id="calibre" inputmode="decimal"></div>
-
-          <div class="field"><label>Tipo impresión</label><input id="impresionTop" readonly></div>
-          <div class="field"><label>No. tintas</label><input id="tintasTop" readonly></div>
-          <div class="field"><label>Vistas</label><input id="vistasTop" readonly></div>
-          <div class="field"><label>Gajos / vista</label><input id="gajosVistaTop" readonly></div>
-
-          <details class="interp">
-            <summary>⚙ Producto / material / accesorios</summary>
-            <div class="inside">
-              <div class="field"><label>Familia</label><input id="familia"></div>
-              <div class="field"><label>Color / combinación</label><input id="color"></div>
-              <div class="field"><label>Modo de gajos</label><input id="modoGajos"></div>
-              <div class="field"><label>Gajos manuales</label><input id="gajosManuales" inputmode="numeric"></div>
-              <div class="field"><label>Válvula</label><input id="valvula"></div>
-              <div class="field"><label>Bolsa / empaque</label><input id="bolsa"></div>
-              <div class="field"><label>Accesorios extra $/pza</label><input id="accesoriosExtra" inputmode="decimal"></div>
-              <div class="field"><label>Desarrollo especial $/lote</label><input id="desarrolloEspecial" inputmode="decimal"></div>
-              <div class="field"><label>Aplicar IVA</label><input id="iva"></div>
-              <div class="field"><label>Material</label><input id="material"></div>
-            </div>
-          </details>
-
-          <details class="interp">
-            <summary>🖨 Impresión / diseño</summary>
-            <div class="inside">
-              <div class="field"><label>Tipo impresión</label><input id="impresion"></div>
-              <div class="field"><label>Gajos por vista</label><input id="gajosVista" inputmode="numeric"></div>
-              <div class="field"><label>Número de vistas</label><input id="vistas" inputmode="numeric"></div>
-              <div class="field"><label>Gajos impresos totales</label><input id="gajos" inputmode="numeric"></div>
-              <div class="field"><label>No. de tintas</label><input id="tintas" inputmode="numeric"></div>
-              <div class="field"><label>Diseños diferentes</label><input id="disenos" inputmode="numeric"></div>
-              <div class="field"><label>Tipo de diseño</label><input id="tipoDiseno"></div>
-              <div class="field"><label>Área digital manual m²/pza</label><input id="areaDigital" inputmode="decimal"></div>
-              <div class="field"><label>Incluir taxi digital</label><input id="taxiDigital"></div>
-              <div class="field"><label>Costo taxi digital $/lote</label><input id="costoTaxi" inputmode="decimal"></div>
-              <div class="field full"><label>Arte / notas de impresión</label><input id="arte"></div>
-            </div>
-          </details>
-
-          <details class="interp">
-            <summary>🎈 Elevación / tubo / instalación</summary>
-            <div class="inside">
-              <div class="field"><label>Preparar para elevar</label><input id="elevar"></div>
-              <div class="field"><label>Tubo interno polo a polo</label><input id="tubo"></div>
-              <div class="field"><label>Diámetro tubo interno (m)</label><input id="diamTubo" inputmode="decimal"></div>
-              <div class="field"><label>Altitud instalación (m s.n.m.)</label><input id="altitud" inputmode="numeric"></div>
-              <div class="field"><label>Incluir servicio instalación</label><input id="servicio"></div>
-              <div class="field"><label>Distancia un sentido (km)</label><input id="distancia" inputmode="decimal"></div>
-              <div class="field"><label>Casetas viaje redondo ($)</label><input id="casetas" inputmode="decimal"></div>
-              <div class="field"><label>Personas para servicio</label><input id="personas" inputmode="numeric"></div>
-              <div class="field"><label>Horas totales (Por hora)</label><input id="horasTotales" inputmode="decimal"></div>
-              <div class="field"><label>Viáticos adicionales ($)</label><input id="viaticos" inputmode="decimal"></div>
-              <div class="field"><label>Hotel / otros gastos ($)</label><input id="hotel" inputmode="decimal"></div>
-              <div class="field"><label>Modalidad servicio</label><input id="modalidad"></div>
-              <div class="field"><label>Número de días</label><input id="dias" inputmode="numeric"></div>
-              <div class="field"><label>Horas por día</label><input id="horasDia" inputmode="decimal"></div>
-              <div class="field"><label>Noches de hotel</label><input id="noches" inputmode="numeric"></div>
-              <div class="field"><label>Tipo de piola</label><input id="piola"></div>
-              <div class="field"><label>Peso extra accesorios/refuerzos kg/pza</label><input id="pesoExtra" inputmode="decimal"></div>
-              <div class="field full"><label>Observación servicio / accesorios</label><input id="obsServicio"></div>
-            </div>
-          </details>
-          <div id="interpretWarnings">Describe el producto como lo harías normalmente. Los campos no mencionados usan únicamente los valores predeterminados del cotizador ESF-001.</div>
-        </div>
-      </section>
-    </div>
-
-    <section class="card summary">
-      <h2>💲 Resumen de cotización</h2>
-      <div class="tableWrap">
-        <table><thead><tr><th>Cantidad</th><th>Precio unitario</th><th>Importe</th><th>Estado</th></tr></thead><tbody id="quoteBody"><tr><td colspan="4">Interpreta una solicitud para comenzar.</td></tr></tbody></table>
-      </div>
-      <div class="notice" id="engineNotice">Motor Pelotas / Esferas ESF-001 integrado con variables del cotizador maestro. Revisa los datos interpretados antes de usar el precio.</div>
-    </section>
-
-    <section class="categories" id="categories">
-      <button class="cat" data-name="Pelota"><span class="ico">🏐</span><b>Pelotas</b></button>
-      <button class="cat" data-name="Boya"><span class="ico">🛟</span><b>Boyas</b></button>
-      <button class="cat" data-name="Arco"><span class="ico">⛩</span><b>Arcos</b></button>
-      <button class="cat" data-name="Túnel"><span class="ico">🌈</span><b>Túneles</b></button>
-      <button class="cat" data-name="Salvavidas"><span class="ico">⭕</span><b>Salvavidas</b></button>
-      <button class="cat" data-name="Dona"><span class="ico">🍩</span><b>Donas / Portavasos</b></button>
-      <button class="cat" data-name="Cartelera"><span class="ico">🪧</span><b>Carteleras / Tótems</b></button>
-      <button class="cat" data-name="Esfera"><span class="ico">🔵</span><b>Esferas</b></button>
-      <button class="cat" data-name="Botella"><span class="ico">🧴</span><b>Botellas</b></button>
-      <button class="cat" data-name="Otro"><span class="ico">❓</span><b>Otros productos</b></button>
-    </section>
-
-    <section class="flow">
-      <div class="step"><span class="n">1</span><b>Elegir o describir</b><div class="sub">Producto o solicitud libre</div></div>
-      <div class="step"><span class="n">2</span><b>Interpretación automática</b><div class="sub">Extrae los datos mientras escribes o dictas</div></div>
-      <div class="step"><span class="n">3</span><b>Revisar datos</b><div class="sub">Corregir antes de calcular</div></div>
-      <div class="step"><span class="n">4</span><b>Generar cotización</b><div class="sub">Con motor real del producto</div></div>
-    </section>
-    </div>
-
-    <div id="controlView" class="view hidden">
-      <section class="controlShell">
-        <div class="controlBar">
-          <button type="button" class="controlBack" id="backCotizador">← Cotizador</button>
-          <h2>▣ CONTROL ODP INFLASTIC</h2>
-          <button type="button" class="controlConfig" id="configControl">⚙ Cambiar URL</button>
-        </div>
-        <div id="controlSetup" class="controlSetup">
-          <h2>Conectar CONTROL ODP</h2>
-          <p>Pega una sola vez la URL de tu Web App de CONTROL ODP. Después se abrirá dentro de este mismo Cotizador Principal.</p>
-          <input id="controlUrlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec">
-          <div class="row">
-            <button type="button" id="saveControlUrl">Guardar y abrir Control</button>
-          </div>
-          <div class="muted">La URL queda guardada únicamente en este navegador. CONTROL ODP conserva su propia clave y sesión.</div>
-        </div>
-        <iframe id="controlFrame" title="CONTROL ODP INFLASTIC" hidden></iframe>
-      </section>
-    </div>
-  </main>
-</div>
-
-<script>
-const $=id=>document.getElementById(id);
-let lastData=null;
-let recognition=null;
-
-function setNow(){
-  const d=new Date();
-  $('datePill').textContent='📅 '+d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
-  $('timePill').textContent='🕒 '+d.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-}
-setNow(); setInterval(setNow,30000);
-
-function numVal(id){
-  const v=$(id).value.trim().replace(',','.');
-  return v===''?null:Number(v);
-}
-function formData(){
-  return {
-    producto:$('producto').value.trim(), familia:$('familia').value.trim(),
-    medida_cm:numVal('medida'), calibre:numVal('calibre'), color:$('color').value.trim(),
-    cantidades:$('cantidades').value.split(/[,;\s]+/).map(Number).filter(n=>Number.isFinite(n)&&n>0),
-    modo_gajos:$('modoGajos').value.trim(), gajos_manuales:numVal('gajosManuales'),
-    valvula:$('valvula').value.trim(), bolsa:$('bolsa').value.trim(),
-    accesorios_extra:numVal('accesoriosExtra')||0, desarrollo_especial:numVal('desarrolloEspecial')||0,
-    aplicar_iva:$('iva').value.trim()||'SI', material:$('material').value.trim(),
-    impresion:$('impresion').value.trim(), gajos_por_vista:numVal('gajosVista'),
-    vistas:numVal('vistas'), gajos_impresos:numVal('gajos'), tintas:numVal('tintas'),
-    disenos_diferentes:numVal('disenos'), tipo_diseno:$('tipoDiseno').value.trim(),
-    area_digital_manual:numVal('areaDigital')||0, taxi_digital:$('taxiDigital').value.trim(),
-    costo_taxi:numVal('costoTaxi')||0, arte:$('arte').value.trim(),
-    elevar:$('elevar').value.trim(), tubo_interno:$('tubo').value.trim(),
-    diam_tubo_m:numVal('diamTubo'), altitud_m:numVal('altitud'),
-    incluir_servicio:$('servicio').value.trim(), distancia_km:numVal('distancia')||0,
-    casetas:numVal('casetas')||0, personas:numVal('personas'), horas_totales:numVal('horasTotales'),
-    viaticos_adicionales:numVal('viaticos')||0, hotel_otros:numVal('hotel')||0,
-    modalidad_servicio:$('modalidad').value.trim(), dias:numVal('dias'), horas_dia:numVal('horasDia'),
-    noches:numVal('noches'), piola:$('piola').value.trim(), peso_extra:numVal('pesoExtra')||0,
-    observacion_servicio:$('obsServicio').value.trim()
-  };
-}
-function put(id,v){ $(id).value=(v===null||v===undefined)?'':v; }
-function fill(d){
-  lastData=d;
-  put('producto',d.producto); put('familia',d.familia); put('medida',d.medida_cm);
-  put('calibre',d.calibre); put('color',d.color); put('cantidades',(d.cantidades||[]).join(', '));
-  put('modoGajos',d.modo_gajos); put('gajosManuales',d.gajos_manuales); put('valvula',d.valvula); put('bolsa',d.bolsa);
-  put('accesoriosExtra',d.accesorios_extra); put('desarrolloEspecial',d.desarrollo_especial); put('iva',d.aplicar_iva);
-  put('material',d.material); put('impresion',d.impresion); put('gajosVista',d.gajos_por_vista); put('vistas',d.vistas);
-  put('gajos',d.gajos_impresos); put('tintas',d.tintas); put('disenos',d.disenos_diferentes); put('tipoDiseno',d.tipo_diseno);
-  put('areaDigital',d.area_digital_manual); put('taxiDigital',d.taxi_digital); put('costoTaxi',d.costo_taxi); put('arte',d.arte);
-  put('elevar',d.elevar); put('tubo',d.tubo_interno); put('diamTubo',d.diam_tubo_m); put('altitud',d.altitud_m);
-  put('servicio',d.incluir_servicio); put('distancia',d.distancia_km); put('casetas',d.casetas); put('personas',d.personas);
-  put('horasTotales',d.horas_totales); put('viaticos',d.viaticos_adicionales); put('hotel',d.hotel_otros);
-  put('modalidad',d.modalidad_servicio); put('dias',d.dias); put('horasDia',d.horas_dia); put('noches',d.noches);
-  put('piola',d.piola); put('pesoExtra',d.peso_extra); put('obsServicio',d.observacion_servicio);
-  $('interpretWarnings').innerHTML=(d.alertas&&d.alertas.length)
-    ? '<span class="badgeWarn">Revisar</span> '+d.alertas.join(' · ')
-    : 'Interpretación completa. Revisa los datos antes de cotizar.';
-  $('msg').textContent='Interpretación lista ('+(d.fuente||'IA')+'). Revisa los datos antes de cotizar.';
-  if(typeof syncCompactPrintFields==='function') syncCompactPrintFields();
-}
-function normalizeSpeechText(text){
-  let s=String(text||'').toLowerCase()
-    .replace(/\u00a0/g,' ').replace(/[–—]/g,'-')
-    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u')
-    .replace(/\s+/g,' ').trim();
-
-  // Fracciones y expresiones comunes del dictado.
-  s=s.replace(/\bmetro y medio\b/g,'1.5 metros')
-     .replace(/\bmetros y medio\b/g,'1.5 metros')
-     .replace(/\bmedio metro\b/g,'0.5 metros')
-     .replace(/\bun metro\b/g,'1 metro')
-     .replace(/\buna tinta\b/g,'1 tinta')
-     .replace(/\buna vista\b/g,'1 vista')
-     .replace(/\bun gajo\b/g,'1 gajo')
-     .replace(/\bun diseno\b/g,'1 diseno')
-     .replace(/\buna pieza\b/g,'1 pieza')
-     .replace(/\bun dia\b/g,'1 dia')
-     .replace(/\buna noche\b/g,'1 noche')
-     .replace(/\buna persona\b/g,'1 persona')
-     .replace(/\buna hora\b/g,'1 hora');
-
-  const simple={
-    cero:0,un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,
-    diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,
-    veinte:20,veintiuno:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,veintiseis:26,veintisiete:27,veintiocho:28,veintinueve:29,
-    treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100
-  };
-  const tens={treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90};
-  const ones={un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9};
-  s=s.replace(/\b(treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa)\s+y\s+(un|uno|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve)\b/g,
-    (_,a,b)=>String(tens[a]+ones[b]));
-  // cientos sencillos
-  s=s.replace(/\b(doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos)\b/g,
-    m=>String({doscientos:200,trescientos:300,cuatrocientos:400,quinientos:500,seiscientos:600,setecientos:700,ochocientos:800,novecientos:900}[m]));
-  for(const [k,v] of Object.entries(simple).sort((a,b)=>b[0].length-a[0].length)){
-    s=s.replace(new RegExp('\\b'+k+'\\b','g'),String(v));
-  }
-  // "2 mil" / "mil"
-  s=s.replace(/\b(\d+)\s+mil\b/g,(_,n)=>String(Number(n)*1000)).replace(/\bmil\b/g,'1000');
-  return s.replace(/\s+/g,' ').trim();
-}
-function yesNoFrom(t, yesRx, noRx, def=''){
-  if(noRx && noRx.test(t)) return 'NO';
-  if(yesRx && yesRx.test(t)) return 'SI';
-  return def;
-}
-function mNumber(t,rx){
-  const m=t.match(rx); return m?Number(String(m[1]).replace(',','.')):null;
-}
-function interpretLocalBrowser(text){
-  const raw=String(text||'').trim();
-  const t=normalizeSpeechText(raw);
-  const alertas=[];
-
-  let producto='',familia='';
-  if(/\bpelotas?\b/.test(t)){producto='Pelota';familia='Pelotas / Esferas';}
-  else if(/\besferas?\b/.test(t)){producto='Esfera';familia='Pelotas / Esferas';}
-  else if(/\bboyas?\b/.test(t)){producto='Boya';familia='Boyas';}
-  else if(/\barcos?\b/.test(t)){producto='Arco';familia='Arcos';}
-  else if(/\btunel(?:es)?\b/.test(t)){producto='Túnel';familia='Túneles';}
-  else if(/\bsalvavidas?\b/.test(t)){producto='Salvavidas';familia='Salvavidas';}
-  else if(/\bdonas?\b/.test(t)){producto='Dona';familia='Donas / Portavasos';}
-  else if(/\bportavasos?\b/.test(t)){producto='Portavasos';familia='Donas / Portavasos';}
-  else if(/\bbotellas?\b/.test(t)){producto='Botella';familia='Botellas';}
-  else {producto='Otro';familia='Otros productos';}
-
-  // Medida principal: exige unidad para nunca confundir cantidad/tintas/vistas con diámetro.
-  let medida=null, med=null;
-  const medidaRx=[
-    /(?:diametro(?:\s+de)?|medida(?:\s+de)?|de)\s*(\d+(?:[.,]\d+)?)\s*(milimetros?|mm|centimetros?|cms?|cm|metros?|mts?|mt|m)\b/i,
-    /\b(\d+(?:[.,]\d+)?)\s*(milimetros?|mm|centimetros?|cms?|cm|metros?|mts?|mt|m)\b/i
-  ];
-  for(const rx of medidaRx){med=t.match(rx);if(med)break;}
-  if(med){
-    const v=Number(med[1].replace(',','.')),u=med[2];
-    medida=/^(mm|mil)/i.test(u)?v/10:/^(cm|cent)/i.test(u)?v:v*100;
-  }
-
-  const calibre=mNumber(t,/\b(?:calibre|cal\.?)\s*(\d+(?:[.,]\d+)?)\b/i) ?? 8;
-  let color='Blanco';
-  const colorM=t.match(/\b(?:color|en)\s+(blanco|negro|rojo|azul|verde|amarillo|naranja|morado|violeta|rosa|transparente|cristal)\b/i);
-  if(colorM) color=colorM[1][0].toUpperCase()+colorM[1].slice(1);
-  if(/\bcombinad[oa]|combinacion|varios colores|multicolor\b/i.test(t)) color='Combinación';
-
-  let modo_gajos='Automático recomendado',gajos_manuales=null;
-  const gm=mNumber(t,/\b(?:usar|con|hacer(?:lo)?\s+de|manual(?:mente)?\s+)?(\d+)\s+gajos?\s+(?:totales|de construccion|para fabricar|manuales)\b/i);
-  if(gm){modo_gajos='Manual';gajos_manuales=gm;}
-
-  let valvula='Auto';
-  const vm=t.match(/\bvalvula\s+(chica|mediana|grande|jumbo)\b/i);
-  if(vm) valvula=vm[1][0].toUpperCase()+vm[1].slice(1);
-  if(/\bsin valvula\b/i.test(t)) {valvula='Auto';alertas.push('El cotizador ESF-001 requiere válvula; se dejó en Auto.');}
-
-  let bolsa='Auto';
-  const bm=t.match(/\bbolsa\s+(?:de\s+)?(\d+\s*x\s*\d+|sin bolsa|especial)\b/i);
-  if(bm) bolsa=/sin bolsa/i.test(bm[1])?'Sin bolsa':/especial/i.test(bm[1])?'Especial':bm[1].replace(/\s*x\s*/,' x ');
-  if(/\bsin bolsa\b/i.test(t)) bolsa='Sin bolsa';
-
-  const accesorios_extra=mNumber(t,/\baccesorios?\s+extra(?:s)?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i) || 0;
-  const desarrollo_especial=mNumber(t,/\bdesarrollo(?:\s+especial)?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i) || 0;
-  const aplicar_iva=yesNoFrom(t,/\b(?:con|mas|aplicar)\s+iva\b|\biva\s+si\b/i,/\bsin iva\b|\biva\s+no\b/i,'SI');
-
-  // Impresión
-  let impresion='';
-  if(/\bsin\s+(?:impresion|imprimir|logo)\b/.test(t)) impresion='Sin impresión';
-  else if(/\b(?:digital\s+uv|uv)\b/.test(t)) impresion='Digital UV';
-  else if(/\b(?:impresion\s+digital|digital)\b/.test(t)) impresion='Digital';
-  else if(/\bserigrafia\b/.test(t)||/\b\d+\s+tintas?\b/.test(t)||/\bcon impresion\b/.test(t)) impresion='Serigrafía';
-
-  let tintas=mNumber(t,/\b(\d+)\s+tintas?\b/i);
-  let vistas=mNumber(t,/\b(\d+)\s+vistas?\b/i);
-  let gajos_por_vista=mNumber(t,/\b(\d+)\s+gajos?\s+(?:por|cada)\s+vista\b/i);
-  let gajos_impresos=mNumber(t,/\b(\d+)\s+gajos?\s+impresos?\b/i);
-  // Frases naturales: "impresión digital en 2 gajos" o "logo en 2 gajos".
-  if(gajos_impresos==null){
-    const eg=mNumber(t,/\b(?:impresion|digital|logo)\b[^.;,]{0,35}?\ben\s+(\d+)\s+gajos?\b/i);
-    if(eg!=null) gajos_impresos=eg;
-  }
-  // En serigrafía, "2 gajos mismo logo" sin mencionar vistas se toma como 1 vista que ocupa 2 gajos.
-  if(gajos_por_vista==null && impresion==='Serigrafía'){
-    const sg=mNumber(t,/\b(\d+)\s+gajos?\b(?=[^.;,]{0,35}\b(?:mismo\s+logo|mismo\s+diseno|logo)\b)/i);
-    if(sg!=null) gajos_por_vista=sg;
-  }
-  if(gajos_por_vista==null && vistas!=null && /(?:logo|impresion).*(?:vista)|vista.*(?:logo|impresion)/i.test(t)) gajos_por_vista=1;
-  if(vistas==null && /\b(?:a|de|con)\s+1\s+vista\b/i.test(t)) vistas=1;
-  if(gajos_impresos==null && gajos_por_vista!=null && vistas!=null) gajos_impresos=gajos_por_vista*vistas;
-  if(gajos_impresos!=null && gajos_por_vista==null && vistas==null){gajos_por_vista=gajos_impresos;vistas=1;}
-  if(impresion==='Serigrafía'){
-    if(tintas==null) tintas=1;
-    if(vistas==null) vistas=1;
-    if(gajos_por_vista==null) gajos_por_vista=1;
-    gajos_impresos=gajos_por_vista*vistas;
-  }
-  if(impresion==='Sin impresión'){tintas=null;vistas=null;gajos_por_vista=null;gajos_impresos=null;}
-
-  let disenos_diferentes=mNumber(t,/\b(\d+)\s+dise[nñ]os?\s+diferentes?\b/i);
-  let tipo_diseno='Mismo diseño repetido';
-  if(/\bdise[nñ]os?\s+diferentes?|diferente dise[nñ]o|logos?\s+diferentes?\b/i.test(t)){
-    tipo_diseno='Diseños diferentes';
-  }
-  if(tipo_diseno==='Diseños diferentes' && disenos_diferentes==null) disenos_diferentes=vistas||1;
-  if(disenos_diferentes==null) disenos_diferentes=1;
-
-  const area_digital_manual=mNumber(t,/\b(?:area|superficie)\s+(?:digital\s+)?(?:manual\s+)?(?:de\s+)?(\d+(?:[.,]\d+)?)\s*m2\b/i)||0;
-  let taxi_digital=yesNoFrom(t,/\b(?:con|incluir)\s+taxi\b|\btaxi digital\b/i,/\bsin taxi\b/i,'SI');
-  const costo_taxi=mNumber(t,/\btaxi(?:\s+digital)?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i) ?? 500;
-  const arte=raw.match(/\b(?:arte|logo|dise[nñ]o)\s*[:\-]?\s*([^,;.]+)/i)?.[1]?.trim()||'';
-
-  // Elevación / tubo / servicio
-  const elevar=yesNoFrom(t,/\b(?:para elevar|elevar|con helio|flotar|volar)\b/i,/\b(?:no elevar|sin helio|sin elevar)\b/i,'NO');
-  let tubo_interno=yesNoFrom(t,/\btubo interno|tubo polo a polo\b/i,/\bsin tubo\b/i,'NO');
-  let diam_tubo_m=null;
-  const dt=t.match(/\b(?:diametro\s+del?\s+)?tubo(?:\s+interno)?(?:\s+de)?\s*(\d+(?:[.,]\d+)?)\s*(mm|cm|centimetros?|m|metros?)\b/i);
-  if(dt){let v=Number(dt[1].replace(',','.'));diam_tubo_m=/mm/.test(dt[2])?v/1000:/cm|cent/.test(dt[2])?v/100:v;tubo_interno='SI';}
-  if(tubo_interno==='SI' && diam_tubo_m==null) diam_tubo_m=0.1;
-  const altitud_m=mNumber(t,/\b(?:altitud|altura)\s*(?:de|a)?\s*(\d+(?:[.,]\d+)?)\s*(?:m\s*s\.?\s*n\.?\s*m\.?|msnm|metros sobre el nivel del mar)\b/i) ?? 2240;
-
-  let incluir_servicio=yesNoFrom(t,/\b(?:incluir|con)\s+(?:servicio|instalacion)|servicio de instalacion\b/i,/\bsin servicio|sin instalacion\b/i,'NO');
-  const distancia_km=mNumber(t,/\b(?:distancia|a)\s*(?:de\s*)?(\d+(?:[.,]\d+)?)\s*km\b/i)||0;
-  const casetas=mNumber(t,/\bcasetas?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i)||0;
-  const personas=mNumber(t,/\b(\d+)\s+personas?\b/i) ?? 2;
-  const horas_totales=mNumber(t,/\b(\d+(?:[.,]\d+)?)\s+horas?\s+totales\b/i) ?? 6;
-  const viaticos_adicionales=mNumber(t,/\bviaticos?(?:\s+adicionales?)?\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i)||0;
-  const hotel_otros=mNumber(t,/\b(?:hotel|otros gastos)\s*(?:de|\$)?\s*(\d+(?:[.,]\d+)?)\b/i)||0;
-  let modalidad_servicio='Por hora';
-  if(/\bvarios dias\b/i.test(t)) modalidad_servicio='Varios días';
-  else if(/\bpor dia\b/i.test(t)) modalidad_servicio='Por día';
-  const dias=mNumber(t,/\b(\d+)\s+dias?\b/i) ?? 1;
-  const horas_dia=mNumber(t,/\b(\d+(?:[.,]\d+)?)\s+horas?\s+(?:por|al)\s+dia\b/i) ?? 8;
-  const noches=mNumber(t,/\b(\d+)\s+noches?\b/i) ?? 0;
-  let piola='6 mm'; const pm=t.match(/\bpiola\s+(?:de\s+)?(\d+(?:[.,]\d+)?)\s*mm\b/i); if(pm) piola=pm[1]+' mm';
-  const peso_extra=mNumber(t,/\bpeso(?:\s+adicional|\s+extra)?(?:\s+de\s+accesorios?)?\s*(\d+(?:[.,]\d+)?)\s*kg\b/i)||0;
-
-  // Cantidades: extrae únicamente de contextos de cantidad; nunca usa medidas/tintas/vistas/gajos.
-  let cantidades=[];
-  const addNums=s=>(String(s||'').match(/\d{1,6}/g)||[]).map(Number).forEach(n=>{if(n>0&&!cantidades.includes(n))cantidades.push(n)});
-  const ctx=[
-    /\bcotizar(?:\s+(?:en|por|para))?\s+([0-9,\sy]+?)\s*(?:piezas?|pzas?|unidades?)\b/i,
-    /\bcantidades?\s*(?:de|:)?\s*([0-9,\sy]+?)(?=$|[.;])/i,
-    /\b(\d{1,6})\s*(?:piezas?|pzas?|unidades?)\b/i
-  ];
-  for(const rx of ctx){const m=t.match(rx);if(m){addNums(m[1]);break;}}
-  if(!cantidades.length){
-    const prodWords='(?:pelotas?|esferas?)';
-    const q=t.match(new RegExp('(?:^|\\b)(\\d{1,6})\\s+'+prodWords+'\\b','i'));
-    if(q)cantidades=[Number(q[1])];
-  }
-
-  if(producto==='Otro') alertas.push('No se reconoció la familia del producto.');
-  if((producto==='Pelota'||producto==='Esfera') && medida==null) alertas.push('Falta diámetro/medida con unidad (cm o m).');
-  if(!cantidades.length) alertas.push('Falta cantidad o cantidades.');
-  if(impresion==='' && /\bimpres/i.test(t)) alertas.push('Se mencionó impresión pero no se pudo definir el tipo.');
-  if(/Digital UV/i.test(impresion)) alertas.push('UV no está parametrizado en el ESF-001 actual; revisar tarifa antes de autorizar.');
-
-  const material='PVC calibre '+calibre+(calibre===8?' (predeterminado)':'');
-  return {
-    familia,producto,medida_cm:medida,calibre,color,cantidades,modo_gajos,gajos_manuales,valvula,bolsa,
-    accesorios_extra,desarrollo_especial,aplicar_iva,material,
-    impresion,gajos_por_vista,vistas,gajos_impresos,tintas,disenos_diferentes,tipo_diseno,
-    area_digital_manual,taxi_digital,costo_taxi,arte,
-    elevar,tubo_interno,diam_tubo_m,altitud_m,incluir_servicio,distancia_km,casetas,personas,
-    horas_totales,viaticos_adicionales,hotel_otros,modalidad_servicio,dias,horas_dia,noches,piola,peso_extra,
-    observacion_servicio:'',alertas,confianza:0.99,fuente:'Intérprete ESF-001 v5.1'
-  };
-}
-function hasAppsScriptBridge(){
-  return !!(window.google && google.script && google.script.run);
-}
-
-let interpretTimer=null;
-let interpretSeq=0;
-
-function interpret(){
-  const text=$('request').value.trim();
-  if(!text){return;}
-  const seq=++interpretSeq;
-  $('msg').textContent='Interpretando automáticamente…';
-  if(false && hasAppsScriptBridge()){
-    google.script.run.withSuccessHandler(d=>{
-      if(seq!==interpretSeq) return;
-      fill(d);
-      $('msg').textContent='Interpretación actualizada automáticamente. Revisa los datos antes de cotizar.';
-    }).withFailureHandler(e=>{
-      if(seq!==interpretSeq) return;
-      $('msg').textContent='Error al interpretar: '+e.message;
-    }).interpretRequest(text);
-  }else{
-    try{
-      const d=interpretLocalBrowser(text);
-      if(seq!==interpretSeq) return;
-      fill(d);
-      $('msg').textContent='Interpretación actualizada automáticamente. Revisa los datos antes de cotizar.';
-    }catch(e){
-      if(seq===interpretSeq) $('msg').textContent='Error al interpretar: '+e.message;
-    }
-  }
-}
-
-function scheduleInterpret(delay=700){
-  clearTimeout(interpretTimer);
-  const text=$('request').value.trim();
-  if(!text) return;
-  interpretTimer=setTimeout(interpret,delay);
-}
-
-$('request').addEventListener('input',()=>scheduleInterpret(500));
-
-const UTILIDAD_PELOTAS=[[1,1.4],[2,1.3],[3,1.2875],[4,1.275],[5,1.2625],[6,1.25],[7,1.2375],[8,1.225],[9,1.2125],[10,1.2],[11,1.1967],[12,1.1934],[13,1.1901],[14,1.1868],[15,1.18],[16,1.176],[17,1.172],[18,1.168],[19,1.164],[20,1.16],[25,1.15],[30,1.14],[35,1.13],[40,1.12],[45,1.11],[50,1.1],[60,1.08],[70,1.06],[75,1.05],[80,1.04],[90,1.02],[100,1.0],[110,0.99333334],[120,0.98666668],[130,0.98000002],[140,0.97333336],[150,0.9666667],[175,0.9333334],[200,0.9333334],[250,0.9000001],[300,0.8833333],[350,0.8666665],[400,0.8333335],[450,0.8066667],[500,0.8],[550,0.79],[600,0.78],[650,0.77],[700,0.76],[750,0.75],[800,0.74],[900,0.72],[950,0.71],[1000,0.7],[1500,0.686],[2000,0.672],[2500,0.665],[3000,0.658],[3500,0.644],[4000,0.63],[4500,0.616],[5000,0.6],[6000,0.525],[7000,0.51],[7500,0.495],[8000,0.48],[9000,0.465],[10000,0.45],[15000,0.42],[20000,0.3937],[25000,0.374586],[30000,0.36],[40000,0.33],[50000,0.3],[60000,0.2899],[100000,0.295],[250000,0.2895],[500000,0.29]];
-const UTILIDAD_GRANDES=[[1,1.3],[2,1.2],[3,1.1875],[4,1.15],[5,1.13],[6,1.1],[7,1.08],[8,1.05],[9,1.03],[10,1.0],[11,.996],[12,.992],[13,.988],[14,.984],[15,.98],[16,.97],[17,.965],[18,.96],[19,.955],[20,.95],[21,.95],[22,.95],[23,.95],[24,.95],[25,.925],[30,.9],[35,.875],[40,.85],[45,.825],[50,.8],[55,.775],[60,.75],[65,.725],[70,.7],[75,.675],[80,.65],[85,.645],[90,.64],[95,.635],[100,.63],[110,.629],[120,.628],[130,.627],[140,.626],[150,.625],[170,.623],[200,.608],[300,.594],[400,.58],[500,.566],[650,.566],[700,.538],[800,.524],[900,.51],[1000,.49],[1500,.476],[2000,.462],[2500,.455],[3000,.448],[3500,.434],[4000,.42],[4500,.406],[5000,.39],[6000,.315],[7000,.3],[8000,.27],[9000,.255],[10000,.24],[15000,.21],[20000,.18],[25000,.165],[30000,.15],[40000,.12],[50000,.09],[100000,.085],[150000,.085],[500000,.08]];
-const REND={4:7.28,5:5.824,6:4.8533333333,7:4.16,8:3.64,9:3.2355555556,10:2.912,11:2.6472727273,12:2.4266666667,14:2.08,20:1.456,25:1.1648,30:.9706666667,35:.832};
-const BAG_COST={'15 x 25':.174,'20 x 30':.2982857143,'25 x 35':.406,'35 x 45':.7534020619,'40 x 60':1.218,'50 x 70':1.6995348837,'60 x 90':3.654,'90 x 120':9.135};
-const VAL_COST={Chica:1.8,Mediana:3,Grande:5,Jumbo:20};
-function lookupStep(curve,q){let v=curve[0][1];for(const r of curve){if(q>=r[0])v=r[1];else break;}return v;}
-function rendimientoPVC(cal){return REND[cal]||REND[8];}
-function gajosAuto(d){return Math.max(6,Math.ceil(Math.PI*d/(1.4-.02)));}
-function valvulaAuto(d){return d<=.5?'Chica':d<=.8?'Mediana':d<=1.2?'Grande':'Jumbo';}
-function bolsaAuto(d){return d<=.35?'15 x 25':d<=.5?'20 x 30':d<=.8?'25 x 35':d<=1.2?'35 x 45':d<=1.5?'40 x 60':d<=2?'50 x 70':d<=2.5?'60 x 90':'90 x 120';}
-function tubeCost(data,diam,cal){
-  if(data.tubo_interno!=='SI') return {total:0,kg:0,cycles:0};
-  const td=data.diam_tubo_m||.1, ancho=Math.PI*td+.02, largo=diam, area=ancho*largo;
-  const kg=area/rendimientoPVC(cal), pvc=kg*93.3, cycles=Math.ceil(largo/.45)+2, mod=cycles*.82;
-  return {total:pvc+mod,kg,cycles};
-}
-function printCost(data,diam,g,qty){
-  const tipo=data.impresion||'';
-  if(!tipo||tipo==='Sin impresión') return {cost:0,desc:'Sin impresión'};
-  const largo=Math.PI*diam/2, anchoGeom=Math.PI*diam/g;
-  if(tipo==='Serigrafía'){
-    const gv=Math.max(1,data.gajos_por_vista||1), vistas=Math.max(1,data.vistas||1), total=gv*vistas;
-    const tintas=Math.max(1,data.tintas||1), dis=Math.max(1,data.disenos_diferentes||1);
-    const areaPos=(largo*.75*anchoGeom);
-    const fijo=(200*tintas*dis + 1843.088418430884*areaPos*tintas*dis + 0)/qty;
-    const tinta=((areaPos*total)*tintas/28)*350;
-    const mod=total*(.25*6 + Math.max(tintas-1,0)*.25*1)*.82;
-    return {cost:fijo+tinta+mod,desc:'Serigrafía'};
-  }
-  const gd=Math.max(1,data.gajos_impresos||data.gajos_por_vista||g);
-  const areaGajo=(Math.PI*diam/g+.02)*(Math.PI*diam/2);
-  const area=(data.area_digital_manual||0)>0?data.area_digital_manual:areaGajo*gd;
-  let rate=140;
-  if(/UV/i.test(tipo)) rate=200; // campo aceptado, pero fuera del ESF-001 actual
-  const taxi=(data.taxi_digital==='NO'?0:(data.costo_taxi||500)/qty);
-  return {cost:area*rate+taxi,desc:tipo};
-}
-function heliumService(data,diam,qty,kgBody,kgTube){
-  if(data.elevar!=='SI') return {perPiece:0,heliumCost:0,tanks:0,netLift:0,status:'No aplica'};
-  const alt=data.altitud_m??2240, T=288.15-.0065*alt, P=101325*Math.pow(T/288.15,5.25588);
-  const air=P/(287.058*T), he=P/(2077.1*T), vol=Math.PI/6*Math.pow(diam,3);
-  const gross=(air-he)*vol, weight=kgBody+kgTube+.5+(data.peso_extra||0), net=gross-weight;
-  const reqPiece=vol*(P/101325)*(288.15/T)*1.05, total=reqPiece*qty, tanks=total?Math.ceil(total/6):0, helium=tanks*6900;
-  let logistics=0;
-  if(data.incluir_servicio==='SI'){
-    const km=(data.distancia_km||0)*2, gas=(km/8)*25, mant=gas*.15, cas=data.casetas||0, unexpected=(gas+cas)*.05;
-    logistics=gas+mant+cas+unexpected+(data.viaticos_adicionales||0)+(data.hotel_otros||0);
-  }
-  const svc=(helium+logistics)/qty;
-  const status=diam<3?'REVISAR: elevación comercial < 3 m':net<=0?'NO SE ELEVA':net<4?'ELEVA SIN RESERVA':'APTO';
-  return {perPiece:svc,heliumCost:helium,tanks,netLift:net,status};
-}
-function cotizarPelotaEsfera(cm,qty,data){
-  const diam=cm/100, cal=data.calibre||8;
-  const auto=gajosAuto(diam), g=/manual/i.test(data.modo_gajos||'')&&data.gajos_manuales?data.gajos_manuales:auto;
-  const anchoGeom=Math.PI*diam/g, anchoTotal=anchoGeom+.02, largo=Math.PI*diam/2;
-  const areaGajo=anchoTotal*largo, area=areaGajo*g, rend=rendimientoPVC(cal), kgBody=area/rend, pvc=kgBody*93.3;
-  const valve=(data.valvula&&data.valvula!=='Auto')?data.valvula:valvulaAuto(diam), valveCost=VAL_COST[valve]||VAL_COST[valvulaAuto(diam)];
-  const bag=(data.bolsa&&data.bolsa!=='Auto')?data.bolsa:bolsaAuto(diam), bagCost=(bag==='Sin bolsa'||bag==='Especial')?0:(BAG_COST[bag]||0);
-  const tube=tubeCost(data,diam,cal);
-  const accesorios=(data.accesorios_extra||0)+tube.total; // extra elevar maestro = 0
-  const mpd=pvc+valveCost+bagCost+accesorios;
-
-  const metrosSell=largo*g;
-  const selladas=diam<=.46?6:Math.ceil(metrosSell/.45);
-  const fijo=diam<=1.3?1:diam<2.8?3.5:10;
-  const mod=((selladas*(1/6)*2)+fijo+diam*8.459)*.82;
-  const primo=mod+mpd, merma=primo*.05, indirectos=primo*.12, prod=primo+merma+indirectos;
-  const desarrollo=(40+(data.desarrollo_especial||0))/qty;
-  const util=lookupStep(diam<=1.3?UTILIDAD_PELOTAS:UTILIDAD_GRANDES,qty);
-  const sinImp=prod+desarrollo+prod*util;
-  const pr=printCost(data,diam,g,qty);
-  const hs=heliumService(data,diam,qty,kgBody,tube.kg);
-  const unit=sinImp+pr.cost+hs.perPiece;
-  const subtotal=unit*qty, iva=(String(data.aplicar_iva||'SI').toUpperCase()==='SI')?subtotal*.16:0;
-  const alerts=[];
-  if(anchoTotal>1.4) alerts.push('Gajo no cabe en rollo de 1.40 m');
-  if(/UV/i.test(data.impresion||'')) alerts.push('UV usa tarifa provisional externa al ESF-001');
-  if(data.elevar==='SI'&&diam<3) alerts.push('No cotizar elevación comercial por debajo de 3 m');
-  return {
-    cantidad:qty,unitario:unit,importe:subtotal+iva,estado:alerts.length?'Revisar: '+alerts.join('; '):'Calculado',
-    detalle:{diam,cal,g,auto,area,kgBody,pvc,mod,mpd,primo,merma,indirectos,prod,util,desarrollo,
-      impresion:pr.cost,servicio:hs.perPiece,valvula:valve,bolsa:bag,tanks:hs.tanks,netLift:hs.netLift,iva}
-  };
-}
-function calculateLocalQuote(d){
-  const missing=[];
-  if(!d.producto) missing.push('producto');
-  if(!(d.medida_cm>0)) missing.push('diámetro/medida');
-  if(!d.cantidades.length) missing.push('cantidad');
-  if(missing.length)return {ok:false,message:'Faltan datos: '+missing.join(', '),rows:[]};
-  if(!/^(Pelota|Esfera)$/i.test(d.producto))return {ok:false,message:'El motor conectado en esta versión es Pelotas / Esferas (ESF-001).',rows:[]};
-  if(d.impresion==='Serigrafía'&&(!(d.tintas>0)||!(d.vistas>0)||!(d.gajos_por_vista>0)))
-    return {ok:false,message:'Para serigrafía revisa tintas, número de vistas y gajos por vista.',rows:[]};
-  const rows=d.cantidades.map(q=>cotizarPelotaEsfera(d.medida_cm,q,d));
-  return {ok:true,message:'ESF-001 calculado con las variables del cotizador maestro: producto, gajos, PVC, válvula, bolsa, impresión, desarrollo, utilidad, IVA y opciones de elevación/servicio.',rows};
-}
-function money(n){return new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2}).format(n);}
-
-
-$('quoteBtn').addEventListener('click',()=>{
-  const d=formData();
-  $('msg').textContent='Calculando cotización…';
-  const r=calculateLocalQuote(d);
-  const body=$('quoteBody'); body.innerHTML='';
-  (r.rows||[]).forEach(x=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML='<td>'+x.cantidad+' piezas</td><td>'+money(x.unitario)+'</td><td>'+money(x.importe)+'</td><td>'+x.estado+'</td>';
-    body.appendChild(tr);
-  });
-  if(!(r.rows||[]).length) body.innerHTML='<tr><td colspan="4">'+r.message+'</td></tr>';
-  $('engineNotice').textContent=r.message;
-  $('msg').textContent=r.ok?'Cotización calculada. Revisa los datos antes de usar el precio.':'Revisa los datos.';
-});
-
-$('clearBtn').addEventListener('click',()=>{
-  $('request').value=''; ['producto','familia','medida','calibre','color','cantidades','modoGajos','gajosManuales','valvula','bolsa','accesoriosExtra','desarrolloEspecial','iva','material','impresion','gajosVista','vistas','gajos','tintas','disenos','tipoDiseno','areaDigital','taxiDigital','costoTaxi','arte','elevar','tubo','diamTubo','altitud','servicio','distancia','casetas','personas','horasTotales','viaticos','hotel','modalidad','dias','horasDia','noches','piola','pesoExtra','obsServicio'].forEach(id=>$(id).value='');
-  $('quoteBody').innerHTML='<tr><td colspan="4">Interpreta una solicitud para comenzar.</td></tr>';
-  $('msg').textContent='';
-  if(typeof syncCompactPrintFields==='function') syncCompactPrintFields();
-});
-
-$('writeBtn').addEventListener('click',()=>$('request').focus());
-$('attachBtn').addEventListener('click',()=>$('fileInput').click());
-$('fileInput').addEventListener('change',()=>{
-  const f=$('fileInput').files[0];
-  $('msg').textContent=f?'Referencia seleccionada: '+f.name+'. La lectura automática del archivo se conectará en la siguiente etapa.':'';
-});
-
-function setVoiceUi(listening, statusText){
-  const mic=$('micBtn');
-  mic.classList.toggle('recording', listening);
-  mic.setAttribute('aria-pressed', listening ? 'true' : 'false');
-  mic.setAttribute('aria-label', listening ? 'Detener dictado' : 'Dictar solicitud');
-  $('voiceBtn').textContent=listening ? '■ Detener' : '🎙 Hablar';
-  $('voiceStatus').textContent=statusText || (listening ? 'Escuchando… toca otra vez para detener' : 'Toca el micrófono para dictar');
-}
-
-function inIframe(){
-  try{return window.self!==window.top;}catch(e){return true;}
-}
-
-function microphonePolicyBlocked(){
-  try{
-    const pp=document.permissionsPolicy||document.featurePolicy;
-    if(!pp) return false;
-    if(typeof pp.allowsFeature==='function') return !pp.allowsFeature('microphone');
-  }catch(e){}
-  return false;
-}
-
-function voiceErrorMessage(code){
-  const map={
-    'not-allowed':'El navegador recibió permiso, pero esta ventana no puede usar el micrófono.',
-    'service-not-allowed':'El navegador bloqueó el servicio de dictado.',
-    'audio-capture':'No se encontró un micrófono disponible.',
-    'no-speech':'No detecté voz. Toca el micrófono e inténtalo otra vez.',
-    'network':'El servicio de reconocimiento de voz no pudo conectarse. Revisa tu conexión.',
-    'aborted':'Dictado detenido.'
-  };
-  return map[code]||('No se pudo usar el micrófono: '+code);
-}
-
-async function preflightMicrophone(){
-  // En la versión que funcionó de Mis Pendientes, el punto clave fue ejecutar
-  // la interfaz como página independiente (HTTPS), no dentro del iframe de Apps Script.
-  if(inIframe() && microphonePolicyBlocked()){
-    throw new Error('IFRAME_POLICY');
-  }
-  if(!window.isSecureContext && location.protocol!=='file:'){
-    throw new Error('INSECURE');
-  }
-  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
-    try{
-      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-      stream.getTracks().forEach(t=>t.stop());
-    }catch(e){
-      if(e && (e.name==='NotAllowedError'||e.name==='SecurityError')) throw new Error(inIframe()?'IFRAME_POLICY':'PERMISSION');
-      if(e && e.name==='NotFoundError') throw new Error('NO_MIC');
-      // No bloqueamos SpeechRecognition por otros errores transitorios de getUserMedia.
-    }
-  }
-}
-
-async function startVoice(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-
-  if(recognition){
-    try{recognition.stop();}catch(e){}
-    return;
-  }
-
-  if(!SR){
-    $('msg').textContent='Este navegador no ofrece dictado directo. En Windows puedes usar Windows + H; en iPhone/tableta usa el micrófono del teclado.';
-    $('voiceStatus').textContent='Dictado del teclado disponible';
-    $('request').focus();
-    return;
-  }
-
-  setVoiceUi(true,'Activando micrófono…');
-  $('msg').textContent='Activando micrófono…';
-
-  try{
-    await preflightMicrophone();
-  }catch(e){
-    recognition=null;
-    setVoiceUi(false,'Toca el micrófono para dictar');
-    if(e.message==='IFRAME_POLICY'){
-      $('msg').textContent='El permiso ya está dado. El bloqueo viene de la ventana interna de Apps Script. Abre esta interfaz como página independiente HTTPS, igual que Mis Pendientes.';
-    }else if(e.message==='INSECURE'){
-      $('msg').textContent='El micrófono necesita abrirse desde HTTPS.';
-    }else if(e.message==='NO_MIC'){
-      $('msg').textContent='No se encontró un micrófono disponible.';
-    }else{
-      $('msg').textContent='Chrome no permitió abrir el micrófono. Revisa el permiso del sitio y vuelve a intentarlo.';
-    }
-    return;
-  }
-
-  const r=new SR();
-  recognition=r;
-  r.lang='es-MX';
-  r.continuous=false;
-  r.interimResults=true;
-  r.maxAlternatives=1;
-
-  let committed='';
-  const base=$('request').value.trim();
-  let hadError=false;
-
-  r.onstart=()=>{
-    setVoiceUi(true,'Escuchando… toca otra vez para detener');
-    $('msg').textContent='Escuchando…';
-  };
-
-  r.onresult=e=>{
-    let finalText='',interimText='';
-    for(let i=e.resultIndex;i<e.results.length;i++){
-      const phrase=(e.results[i][0].transcript||'').trim();
-      if(e.results[i].isFinal) finalText+=(finalText?' ':'')+phrase;
-      else interimText+=(interimText?' ':'')+phrase;
-    }
-    if(finalText){
-      committed=(committed+' '+finalText).trim();
-      $('request').value=[base,committed].filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
-    }
-    if(interimText){
-      $('voiceStatus').textContent='Escuchando: '+interimText;
-      $('msg').textContent='Escuchando…';
-    }
-  };
-
-  r.onerror=e=>{
-    hadError=true;
-    let m=voiceErrorMessage(e.error);
-    if((e.error==='not-allowed'||e.error==='service-not-allowed')&&inIframe()){
-      m='El permiso de Chrome está activo, pero Apps Script está bloqueando el micrófono dentro de su ventana. Usa la página independiente HTTPS, igual que Mis Pendientes.';
-    }
-    $('msg').textContent=m;
-    $('voiceStatus').textContent=m;
-  };
-
-  r.onend=()=>{
-    recognition=null;
-    if(hadError){
-      setVoiceUi(false,$('voiceStatus').textContent||'Toca el micrófono para dictar');
-    }else{
-      setVoiceUi(false,'Dictado listo. Interpretando automáticamente…');
-      $('msg').textContent='Dictado listo. Interpretando automáticamente…';
-      scheduleInterpret(150);
-    }
-    $('request').focus();
-  };
-
-  try{r.start();}
-  catch(e){
-    recognition=null;
-    setVoiceUi(false,'Toca el micrófono para dictar');
-    $('msg').textContent='No se pudo iniciar el micrófono. Intenta nuevamente.';
-  }
-}
-
-$('micBtn').setAttribute('aria-pressed','false');
-$('micBtn').addEventListener('click',startVoice);
-$('voiceBtn').addEventListener('click',startVoice);
-
-// Mensaje útil si el archivo se abre dentro de Apps Script y la política de iframe bloquea micrófono.
-window.addEventListener('load',()=>{
-  if(inIframe()&&microphonePolicyBlocked()){
-    $('voiceStatus').textContent='Micrófono: abrir versión independiente HTTPS';
-  }
-});
-
-document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>{
-  document.querySelectorAll('.cat').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');
-  $('producto').value=btn.dataset.name;
-  if(!$('request').value.trim())$('request').value=btn.dataset.name+' ';
-  $('request').focus();
-  scheduleInterpret(400);
-}));
-
-/* ===== v5.1 · ESPEJO COMPACTO DE IMPRESIÓN ===== */
-function syncCompactPrintFields(){
-  const pairs=[
-    ['impresion','impresionTop'],
-    ['tintas','tintasTop'],
-    ['vistas','vistasTop'],
-    ['gajosVista','gajosVistaTop']
-  ];
-  pairs.forEach(([src,dst])=>{
-    const a=$(src),b=$(dst);
-    if(a&&b) b.value=a.value||'';
-  });
-}
-['impresion','tintas','vistas','gajosVista'].forEach(id=>{
-  const el=$(id);
-  if(el) el.addEventListener('input',syncCompactPrintFields);
-});
-
-/* ===== v5.1 · CONTROL ODP DENTRO DEL COTIZADOR ===== */
+/* ===== v5.6 · ACCESO PRIVADO + RECUPERACIÓN POR CORREO ===== */
 const CONTROL_URL_KEY='INFLASTIC_CONTROL_ODP_URL_V1';
+let MAIN_AUTHENTICATED=false;
+let AUTH_BRIDGE_READY=false;
+let RECOVERY_NONCE='';
+let ACCESS_STATUS=null;
+let REQ_SEQ=0;
+const ACCESS_PENDING=new Map();
 
 function setActiveNav(which){
   const a=$('navCotizador'),b=$('navControl');
-  if(a) a.classList.toggle('active',which==='cotizador');
-  if(b) b.classList.toggle('active',which==='control');
-}
-function showCotizador(){
-  $('cotizadorView')?.classList.remove('hidden');
-  $('controlView')?.classList.add('hidden');
-  setActiveNav('cotizador');
+  if(a)a.classList.toggle('active',which==='cotizador');
+  if(b)b.classList.toggle('active',which==='control');
 }
 function validControlUrl(url){
   try{
     const u=new URL(String(url||'').trim());
-    return u.protocol==='https:' && (u.hostname==='script.google.com' || u.hostname.endsWith('.googleusercontent.com'));
+    return u.protocol==='https:' &&
+      (u.hostname==='script.google.com' || u.hostname.endsWith('.googleusercontent.com'));
   }catch(e){return false}
 }
+function storedControlUrl(){return String(localStorage.getItem(CONTROL_URL_KEY)||'').trim()}
+function authUrl(base){return base+(base.includes('?')?'&':'?')+'auth=1'}
+
+function configureFrames(){
+  const saved=storedControlUrl();
+  const input=$('mainControlUrl');
+  if(input && !input.value)input.value=saved;
+  if(!saved || !validControlUrl(saved))return;
+  const control=$('controlFrame'),auth=$('authBridgeFrame');
+  if(control)control.src=saved;
+  if(auth)auth.src=authUrl(saved);
+}
+function showCotizador(){
+  if(!MAIN_AUTHENTICATED)return;
+  $('cotizadorView')?.classList.remove('hidden');
+  $('controlView')?.classList.add('hidden');
+  setActiveNav('cotizador');
+}
 function openControl(){
+  if(!MAIN_AUTHENTICATED)return;
+  const url=storedControlUrl();
+  if(!url || !validControlUrl(url))return;
+  const frame=$('controlFrame');
+  if(frame && frame.src!==url)frame.src=url;
   $('cotizadorView')?.classList.add('hidden');
   $('controlView')?.classList.remove('hidden');
   setActiveNav('control');
-  const url=localStorage.getItem(CONTROL_URL_KEY)||'';
-  const setup=$('controlSetup'),frame=$('controlFrame'),input=$('controlUrlInput');
-  if(input) input.value=url;
-  if(url && validControlUrl(url)){
-    setup.hidden=true;
-    frame.hidden=false;
-    if(frame.src!==url) frame.src=url;
+}
+function setLoginMessage(msg,bad=true){
+  const el=$('mainLoginMsg');
+  if(!el)return;
+  el.textContent=msg||'';
+  el.style.color=bad?'#ad332e':'#177245';
+}
+function showMode(mode){
+  $('loginMode').style.display=mode==='login'?'block':'none';
+  $('setupMode').style.display=mode==='setup'?'block':'none';
+  $('recoveryMode').style.display=mode==='recovery'?'block':'none';
+  setLoginMessage('');
+  if(mode==='setup'){
+    $('mainLoginTitle').textContent='Crear acceso';
+    $('mainLoginSub').textContent='Configura tu contraseña y correo de recuperación';
+    setTimeout(()=>$('setupPassword1')?.focus(),80);
+  }else if(mode==='recovery'){
+    $('mainLoginTitle').textContent='Recuperar acceso';
+    $('mainLoginSub').textContent='Recuperación segura por correo';
   }else{
-    frame.hidden=true;
-    setup.hidden=false;
+    $('mainLoginTitle').textContent='INFLASTIC 360';
+    $('mainLoginSub').textContent='Acceso general al sistema';
+    setTimeout(()=>$('mainPassword')?.focus(),80);
   }
 }
-$('navCotizador')?.addEventListener('click',showCotizador);
-$('navControl')?.addEventListener('click',openControl);
-$('backCotizador')?.addEventListener('click',showCotizador);
-$('configControl')?.addEventListener('click',()=>{
-  const setup=$('controlSetup'),frame=$('controlFrame');
-  if(setup) setup.hidden=false;
-  if(frame) frame.hidden=true;
-  $('controlUrlInput')?.focus();
-});
-$('saveControlUrl')?.addEventListener('click',()=>{
-  const url=String($('controlUrlInput')?.value||'').trim();
-  if(!validControlUrl(url)){
-    alert('Pega la URL HTTPS de la Web App de CONTROL ODP (script.google.com/macros/s/.../exec).');
+function accessRequest(action,payload={}){
+  return new Promise((resolve,reject)=>{
+    if(!AUTH_BRIDGE_READY)return reject(new Error('El validador todavía no está listo.'));
+    const requestId='r'+Date.now()+'_'+(++REQ_SEQ);
+    const timer=setTimeout(()=>{
+      ACCESS_PENDING.delete(requestId);
+      reject(new Error('La validación tardó demasiado. Intenta de nuevo.'));
+    },12000);
+    ACCESS_PENDING.set(requestId,{resolve,reject,timer});
+    try{
+      $('authBridgeFrame').contentWindow.postMessage(
+        {type:'INFLASTIC_MAIN_ACCESS',action,payload,requestId},
+        '*'
+      );
+    }catch(e){
+      clearTimeout(timer);ACCESS_PENDING.delete(requestId);reject(e);
+    }
+  });
+}
+async function refreshAccessStatus(){
+  try{
+    ACCESS_STATUS=await accessRequest('status');
+    if(ACCESS_STATUS?.configured)showMode('login');
+    else showMode('setup');
+  }catch(e){setLoginMessage(e.message)}
+}
+async function mainLogin(){
+  const pwd=String($('mainPassword')?.value||'');
+  if(!pwd)return setLoginMessage('Escribe tu contraseña.');
+  const btn=$('mainLoginBtn');btn.disabled=true;btn.textContent='VERIFICANDO…';
+  try{
+    const r=await accessRequest('verify',{password:pwd});
+    if(!r?.ok)return setLoginMessage(r?.message||'Contraseña incorrecta.');
+    MAIN_AUTHENTICATED=true;
+    document.body.classList.remove('authLocked');
+    $('mainPassword').value='';
+    $('mainLogin').classList.add('hidden');
+    showCotizador();
+  }catch(e){setLoginMessage(e.message)}
+  finally{btn.disabled=false;btn.textContent='ENTRAR'}
+}
+async function setupAccess(){
+  const p1=String($('setupPassword1')?.value||'');
+  const p2=String($('setupPassword2')?.value||'');
+  const email=String($('setupEmail')?.value||'').trim();
+  if(p1.length<8)return setLoginMessage('Usa al menos 8 caracteres.');
+  if(p1!==p2)return setLoginMessage('Las contraseñas no coinciden.');
+  if(!email)return setLoginMessage('Captura tu correo de recuperación.');
+  const btn=$('setupAccessBtn');btn.disabled=true;btn.textContent='GUARDANDO…';
+  try{
+    const r=await accessRequest('setup',{password:p1,email});
+    if(!r?.ok)return setLoginMessage(r?.message||'No fue posible crear el acceso.');
+    $('setupPassword1').value='';$('setupPassword2').value='';
+    showMode('login');
+    setLoginMessage('Acceso creado. Ya puedes entrar.',false);
+  }catch(e){setLoginMessage(e.message)}
+  finally{btn.disabled=false;btn.textContent='CREAR ACCESO'}
+}
+async function sendRecovery(){
+  const btn=$('sendRecoveryBtn');btn.disabled=true;btn.textContent='ENVIANDO…';
+  try{
+    const r=await accessRequest('requestRecovery');
+    if(!r?.ok)return setLoginMessage(r?.message||'No fue posible enviar el código.');
+    RECOVERY_NONCE=String(r.nonce||'');
+    $('recoveryStep1').style.display='none';
+    $('recoveryStep2').style.display='block';
+    setLoginMessage('Código enviado a '+(r.recoveryEmailMasked||'tu correo')+'.',false);
+    setTimeout(()=>$('recoveryCode')?.focus(),80);
+  }catch(e){setLoginMessage(e.message)}
+  finally{btn.disabled=false;btn.textContent='ENVIAR CÓDIGO'}
+}
+async function resetPassword(){
+  const code=String($('recoveryCode')?.value||'').trim();
+  const p1=String($('recoveryPass1')?.value||'');
+  const p2=String($('recoveryPass2')?.value||'');
+  if(!/^\d{6}$/.test(code))return setLoginMessage('Captura el código de 6 dígitos.');
+  if(p1.length<8)return setLoginMessage('La nueva contraseña debe tener al menos 8 caracteres.');
+  if(p1!==p2)return setLoginMessage('Las contraseñas no coinciden.');
+  const btn=$('resetPasswordBtn');btn.disabled=true;btn.textContent='CAMBIANDO…';
+  try{
+    const r=await accessRequest('resetWithCode',{nonce:RECOVERY_NONCE,code,newPassword:p1});
+    if(!r?.ok)return setLoginMessage(r?.message||'No fue posible cambiar la contraseña.');
+    $('recoveryCode').value='';$('recoveryPass1').value='';$('recoveryPass2').value='';
+    showMode('login');
+    setLoginMessage('Contraseña actualizada. Ya puedes entrar.',false);
+  }catch(e){setLoginMessage(e.message)}
+  finally{btn.disabled=false;btn.textContent='CAMBIAR CONTRASEÑA'}
+}
+
+window.addEventListener('message',e=>{
+  const d=e.data||{};
+  if(d.type==='INFLASTIC_MAIN_BRIDGE_READY'){
+    AUTH_BRIDGE_READY=true;
+    refreshAccessStatus();
     return;
   }
-  localStorage.setItem(CONTROL_URL_KEY,url);
-  const setup=$('controlSetup'),frame=$('controlFrame');
-  setup.hidden=true; frame.hidden=false; frame.src=url;
+  if(d.type==='INFLASTIC_MAIN_RESPONSE'){
+    const p=ACCESS_PENDING.get(String(d.requestId||''));
+    if(!p)return;
+    clearTimeout(p.timer);ACCESS_PENDING.delete(String(d.requestId||''));
+    p.resolve(d.result||{ok:false,message:'Respuesta inválida.'});
+  }
 });
+
+$('mainLoginBtn')?.addEventListener('click',mainLogin);
+$('mainPassword')?.addEventListener('keydown',e=>{if(e.key==='Enter')mainLogin()});
+$('setupAccessBtn')?.addEventListener('click',setupAccess);
+$('forgotBtn')?.addEventListener('click',()=>showMode('recovery'));
+$('backLoginBtn')?.addEventListener('click',()=>{ $('recoveryStep1').style.display='block';$('recoveryStep2').style.display='none';showMode('login')});
+$('sendRecoveryBtn')?.addEventListener('click',sendRecovery);
+$('resendRecoveryBtn')?.addEventListener('click',()=>{ $('recoveryStep1').style.display='block';$('recoveryStep2').style.display='none';sendRecovery()});
+$('resetPasswordBtn')?.addEventListener('click',resetPassword);
+
+$('mainControlUrl')?.addEventListener('change',()=>{
+  const u=String($('mainControlUrl')?.value||'').trim();
+  if(!validControlUrl(u))return;
+  localStorage.setItem(CONTROL_URL_KEY,u);
+  AUTH_BRIDGE_READY=false;
+  $('authBridgeFrame').src=authUrl(u);
+  $('controlFrame').src=u;
+  setLoginMessage('Conexión guardada.',false);
+});
+$('navCotizador')?.addEventListener('click',showCotizador);
+$('navControl')?.addEventListener('click',openControl);
+
+configureFrames();
+setTimeout(()=>{
+  if(!storedControlUrl())setLoginMessage('Abre Configuración de conexión y pega la URL de CONTROL ODP.');
+},350);
 
 /* Actualiza el resumen compacto después de cualquier interpretación. */
 const _syncCompactObserver=new MutationObserver(syncCompactPrintFields);
@@ -1015,3 +296,4 @@ setTimeout(syncCompactPrintFields,0);
 </script>
 </body>
 </html>
+<!-- INFLASTIC v5.6: CONTROL ODP integrado sin barra superior redundante -->
